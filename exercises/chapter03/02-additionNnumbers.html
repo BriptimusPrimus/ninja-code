@@ -21,7 +21,7 @@ Estimated Time: 10 min<.
         var result = 0;
         for (var i = 0; i < arguments.length; i++) {
           if (typeof arguments[i] == "number"){
-            result = result+arguments[i];
+            result += arguments[i];
           }          
         };
         return result;
@@ -32,6 +32,8 @@ Estimated Time: 10 min<.
       assert(addNvalues(10,10,19,1,1,1,2)===44,"addNvalues(10,10,19,1,1,1,2)===44");
       assert(addNvalues()===0,"addNvalues()===0");
       assert(addNvalues(3)===3,"addNvalues()===3");
+      assert(addNvalues(3, 1, "23", "XX", 5, [1,2,3], { x : 1, y : 2}) == 9, 
+        'addNvalues(3, 1, "23", "XX", 5, [1,2,3], { x : 1, y : 2}) == 9');      
 
     </script>
   </body>

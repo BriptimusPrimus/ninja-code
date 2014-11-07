@@ -1,0 +1,88 @@
+<!-- 
+3. Create an object that will hold methods for adding, multiplying, and factorial operations.
+Example:
+var a = myMath.add (1, 2, 3); //5
+var b = myMath.mul (2, 3); // 6
+var c = myMath.fact (        3); // 6
+        Use of anonymous functions and functions as object properties (methods.) 
+Estimated Time: 15 min<.
+-->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Chapter 03, ex 01</title>
+    <script type="text/javascript" src="../log.js"></script>
+    <script type="text/javascript" src="../../scripts/assert.js"></script>
+    <link href="../../styles/assert.css" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <script type="text/javascript">
+
+      var myMath = {
+        add : function(){
+          var result = 0;
+          for (var i = 0; i < arguments.length; i++) {
+            if (typeof arguments[i] == "number"){
+              result = result + arguments[i];
+            }          
+          };
+          return result;
+        },
+
+        mul : function(){
+          var result = 0;
+          for (var i = 0; i < arguments.length; i++) {
+            if (typeof arguments[i] == "number"){
+              result = result * arguments[i] || arguments[i];
+            }          
+          };
+          return result;
+        },
+
+        fact : function(n){
+          var factorial = 1;
+          while(n){
+            factorial *= n--;
+          }
+          return factorial;
+        },      
+
+        // Factorial using recursion
+        factRec : function recursiveFactorial(n) {
+          // return n ? n * recursiveFactorial(--n) : 1;
+          return (n && n * recursiveFactorial(--n)) || 1;
+        }
+      }     
+
+      assert(myMath.add(1, 2, 3) == 6, "myMath.add (1, 2, 3) == 6");
+      assert(myMath.add(7) == 7, "myMath.add (7) == 7");
+      assert(myMath.add() == 0, "myMath.add () == 0");
+      assert(myMath.add(3, 1, "23", "XX", 5, [1,2,3], { x : 1, y : 2}) == 9, 
+        'myMath.add(3, 1, "23", "XX", 5, [1,2,3], { x : 1, y : 2}) == 9');
+      
+      assert(myMath.mul(2, 3) == 6, "myMath.mul (2, 3) == 6");
+      assert(myMath.mul(1, 2, 4 * 8) == 64, "myMath.mul (1, 2, 4 * 8) == 64");
+      assert(myMath.mul(7) == 7, "myMath.mul (7) == 7");
+      assert(myMath.mul() == 0, "myMath.mul () == 0");
+      assert(myMath.mul(3, 1, "23", "XX", 5, [1,2,3], { x : 1, y : 2}) == 15, 
+        'myMath.mul(3, 1, "23", "XX", 5, [1,2,3], { x : 1, y : 2}) == 15');
+
+      assert(myMath.fact(3) == 6, "myMath.fact (3) == 6");
+      assert(myMath.factRec(4) == 24, "myMath.factRec (4) == 24");
+
+      assert(myMath.fact(3, 5, 1) == 6, "myMath.fact (3, 5, 1) == 6");
+      assert(myMath.factRec(3, 5, 1) == 6, "myMath.factRec (3, 5, 1) == 6");
+
+      assert(myMath.fact(0) == 1, "myMath.fact (0) == 1");
+      assert(myMath.factRec(0) == 1, "myMath.factRec (0) == 1");      
+
+      assert(myMath.fact() == 1, "myMath.fact () == 1");            
+      assert(myMath.factRec() == 1, "myMath.factRec () == 1");            
+
+      console.log(myMath.fact( "5", [1,3,5]));
+      console.log(myMath.fact( [1,3,5]));
+
+    </script>
+  </body>
+</html>
