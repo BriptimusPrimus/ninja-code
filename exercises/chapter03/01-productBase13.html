@@ -17,7 +17,22 @@ Estimated Time: 30 min.
   <body>
     <script type="text/javascript">
 
-      
+      function productBase13(oper1,oper2){
+        prod = oper1 * oper2;
+        return prod.toString(13).toUpperCase();
+      }
+
+      assert(productBase13(2,5)=="A",  "2*5=10,  A base13");
+      assert(productBase13(1,9)==  9,   "1*9=9,  9 base13");
+      assert(productBase13(2,8)=="13", "2*8=16, 13 base13");
+      assert(productBase13(3,7)== 18,  "3*7=21, 18 base13");
+      assert(productBase13(4,6)=="1B", "4*6=24, 1B base13");
+      assert(productBase13(5,5)=="1C", "5*5=25, 1C base13");
+
+      //just log base 13 values to check
+      for (var i = 0; i <= 99; i++) {
+        log(i + " = " + i.toString(13).toUpperCase());
+      };
 
     </script>
   </body>
