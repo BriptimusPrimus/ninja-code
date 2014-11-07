@@ -1,0 +1,38 @@
+<!-- 
+2. Create a function that will return the addition of N numbers.
+        Example:
+                var answer = add (1, 2) + add ( 1, 4, 6, 7, 2);
+Dynamic argument list handling with JS
+Estimated Time: 10 min<.
+-->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Chapter 03, ex 01</title>
+    <script type="text/javascript" src="../log.js"></script>
+    <script type="text/javascript" src="../../scripts/assert.js"></script>
+    <link href="../../styles/assert.css" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <script type="text/javascript">
+
+      function addNvalues(){
+        var result = 0;
+        for (var i = 0; i < arguments.length; i++) {
+          if (typeof arguments[i] == "number"){
+            result = result+arguments[i];
+          }          
+        };
+        return result;
+      }
+
+      assert(addNvalues(1,2,3,4)===10,"addNvalues(1,2,3,4)===10");
+      assert(addNvalues(23,31,4)===58,"addNvalues(23,31,4)===58");
+      assert(addNvalues(10,10,19,1,1,1,2)===44,"addNvalues(10,10,19,1,1,1,2)===44");
+      assert(addNvalues()===0,"addNvalues()===0");
+      assert(addNvalues(3)===3,"addNvalues()===3");
+
+    </script>
+  </body>
+</html>
