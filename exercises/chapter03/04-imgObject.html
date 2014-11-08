@@ -1,0 +1,56 @@
+<!-- 
+4. Create a custom object that will hold an image’s information such as pixel color data, image size, and name. It must be able to return the information.
+        Example:
+                var data = new Array (1600); // 40 x 40 px dummy image data
+                var img = new Image (data, 40, 40, ‘myImage’);
+                img.with; // 40
+                img.height; // 40
+                img.name; // ‘myImage’
+                img.pixelData (20, 4); // returns the color of the pixel at that position. 
+        Estimated Time: 30 min.
+-->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Chapter 03, ex 01</title>
+    <script type="text/javascript" src="../../scripts/assert.js"></script>
+    <link href="../../styles/assert.css" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <script type="text/javascript">
+
+      function Image(data, width, height, name){
+        
+        imgData = data;
+        
+        this.width = width;
+        
+        this.height = height;
+        
+        this.name = name;              
+
+        this.pixelData = function(x, y){
+          var pos = (this.width * y) + x;
+          return imgData[pos];
+        };
+
+      }
+
+      var data = new Array (50); // 10 x 5 px dummy image data
+      var s = "";
+      for (var i = 0; i < data.length; i++) {
+        data[i] = i; 
+        s += i + " - "; if((i + 1) % 10 == 0){console.log(s); s = "";}
+      };
+      var img = new Image (data, 10, 5, "myImage");
+      // returns the color of the pixel at that position.
+      assert(img.pixelData(3, 4) == 43, "img.pixelData(3, 4) == 43");
+      assert(img.pixelData(7, 2) == 27, "img.pixelData(7, 2) == 27");
+      assert(img.pixelData(1, 0) == 1, "img.pixelData(1, 0) == 1");
+      assert(img.pixelData(0, 3) == 30, "img.pixelData(0, 3) == 27");
+      assert(img.pixelData(1, 6) == undefined, "img.pixelData(1, 6) == undefined");
+
+    </script>
+  </body>
+</html>
