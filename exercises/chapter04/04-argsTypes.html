@@ -1,0 +1,40 @@
+<!-- 
+4. Write a function that will accept any number of arguments and print out their data type.
+        Example:
+        dataType (1, 6.2831, “pi*2”, [function(){}, 1], {}, function () {}); 
+        // number, float, string, array, object, function
+        Variable argument functions & data types
+        Estimated Time: 2 hr.
+-->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Chapter 03, ex 01</title>
+    <script type="text/javascript" src="../../scripts/assert.js"></script>
+    <link href="../../styles/assert.css" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <script type="text/javascript">
+
+      function dataType(){
+        var result = "";
+        for (var i = 0; i < arguments.length; i++) {          
+          result += typeof arguments[i] + ", ";
+        };
+        return result.slice(0, result.length - 2);
+      }
+
+      var s = dataType(1, 6.2831, "pi*2", [function(){}, 1], {}, function () {}); 
+      // number, float, string, array, object, function
+      assert(true, 'parameters: 1, 6.2831, "pi*2", [function(){}, 1], {}, function () {}');
+      assert(s == "number, float, string, array, object, function", 
+        '"number, float, string, array, object, function"');
+      assert(s == "number, number, string, object, object, function", 
+        '"number, number, string, object, object, function"');      
+      console.log(s);
+      console.log("s.length" + s.length);
+
+    </script>
+  </body>
+</html>

@@ -1,0 +1,47 @@
+<!-- 
+3. Create a custom object type that will hold a number value. 
+   1. Make sure that no other data type can be assigned to that variable. 
+   2. It must hold ONLY numbers. 
+Validation, setters & getters, private variables
+Estimated Time: 1 hr <.
+-->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Chapter 03, ex 01</title>
+    <script type="text/javascript" src="../../scripts/assert.js"></script>
+    <link href="../../styles/assert.css" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <script type="text/javascript">
+
+      function Numeric(){
+
+        var privNumb = 0;
+
+        this.getValue = function(){          
+          return privNumb;
+        }
+
+        this.setValue = function(num){
+          if(!num || typeof num != "number"){
+            return false;
+          }
+          return privNumb = num;
+        }
+      }
+
+      var num = new Numeric();
+      assert(num.getValue() == 0, "num.getValue() == 0");
+      assert(num.setValue(4) == 4, "num.setValue(4) == 4");
+      assert(num.getValue() == 4, "num.getValue() == 4");
+      assert(num.setValue("5") == false, 'num.setValue("5") == false');
+      assert(num.setValue("hello") == false, 'num.setValue("hello") == false');
+      assert(num.setValue(true) == false, 'num.setValue(true) == false');
+      assert(num.setValue() == false, 'num.setValue() == false');
+      assert(num.getValue() == 4, "num.getValue() == 4");
+
+    </script>
+  </body>
+</html>
