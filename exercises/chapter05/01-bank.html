@@ -1,0 +1,118 @@
+<!-- 
+1. Implement the following:
+   1. A bank that holds client’s information:
+      1. account number;
+      2. balance
+   1. A set of clients where each can:
+      1. hold money of their own;
+      2. deposit money into the bank (to any account);
+      3. retrieve money from the bank (from personal account only);
+      4. view current balance in bank (from personal account only)
+   1. A client cannot deposit more money than what it has;
+   2. A client cannot retrieve more money that what is in its account;
+   3. All financial information must be private
+Use of closures 
+Estimated Time: 4 hr.
+-->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Chapter 05, ex 01, Bank</title>
+    <script type="text/javascript" src="../../scripts/assert.js"></script>
+    <link href="../../styles/assert.css" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <script type="text/javascript">
+
+      var nextAccount = 1234;
+
+      function Account(number){
+
+        var accountNumber = number;
+
+        var balance = 0;
+
+        return {
+          deposit : function(quantity){
+            balance += quantity;
+          },
+
+          retrieve : function(quantity){
+            if (balance < quantity){
+              //cannot retreive that quantity
+              return 0;  
+            }
+            balance -= quantity;
+            return quantity;
+          },
+
+          getBalance : function(){
+            return balance;
+          }
+        }
+      }
+
+
+
+      function Client(initialMoney){
+
+        var ownMoney = initialMoney;
+
+        var account = Account(nextAccount++);  
+
+        return{
+          earnMoney : function(quantity){
+            ownMoney += quantity;
+          },
+
+          loseMoney : function(quantity){
+            // if quantity > ownMoney, then debt
+            ownMoney -= quantity 
+          },
+
+          deposit : function(quantity){
+            if (ownMoney < quantity){
+              // cannot deposit that quantity
+              return 0;
+            }
+            ownMoney -= quantity;
+            account.deposit(quantity);
+            return quantity;
+          },
+
+          retrieve : function(quantity){
+            var retrieved = account.retrieve(quantity);
+            ownMoney += retrieved;
+            return retrieved;
+          },
+
+          viewCurrentBalance : function()
+          {
+            return account.getBalance();
+          }
+        }
+
+      }
+
+
+      // Unit Tests
+      var c1 = Client(100), c2 = Client(0), c3 = Client(30);
+
+      assert(c1.deposit(120) == 0, "c1.deposit(120) == 0");
+      assert(c1.deposit(70) == 70, "c1.deposit(70) == 70");
+      assert(c1.retrieve(30) == 30, "c1.retrieve(30) == 30");
+      assert(c1.viewCurrentBalance() == 40, "c1.viewCurrentBalance == 40");
+      assert(c2.retrieve(1) == 0, "c2.retrieve(1) == 0");
+      c2.earnMoney(60); 
+      assert(c2.deposit(50) == 50, "c2.earnMoney(60); c2.deposit(50) == 50");
+      assert(c1.viewCurrentBalance() == 40, "c1.viewCurrentBalance == 40");
+      assert(c2.viewCurrentBalance() == 50, "c1.viewCurrentBalance == 50");
+      assert(c3.viewCurrentBalance() == 0, "c3.viewCurrentBalance == 0")
+      c1.loseMoney(80);
+      assert(c1.deposit(1) == 0, "c1.loseMoney(80); c1.deposit(1) == 0");
+      assert(c2.deposit(20) == 0, "c2.deposit(20) == 0");
+      assert(c2.deposit(10) == 10, "c2.deposit(10) == 10");
+    </script>
+  </body>
+</html>
