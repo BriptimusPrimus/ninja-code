@@ -25,33 +25,38 @@ Estimated Time: 4 hr.
   <body>
     <script type="text/javascript">
 
-      var nextAccount = 1234;
 
-      function Account(number){
+      var Account = (function(){
 
-        var accountNumber = number;
+        var nextAccount = 1;
 
-        var balance = 0;
+        return function(){
 
-        return {
-          deposit : function(quantity){
-            balance += quantity;
-          },
+          var accountNumber = nextAccount++;
 
-          retrieve : function(quantity){
-            if (balance < quantity){
-              //cannot retreive that quantity
-              return 0;  
+          var balance = 0;
+
+          return {
+            deposit : function(quantity){
+              balance += quantity;
+            },
+
+            retrieve : function(quantity){
+              if (balance < quantity){
+                //cannot retreive that quantity
+                return 0;  
+              }
+              balance -= quantity;
+              return quantity;
+            },
+
+            getBalance : function(){
+              return balance;
             }
-            balance -= quantity;
-            return quantity;
-          },
-
-          getBalance : function(){
-            return balance;
           }
         }
-      }
+
+      })();
 
 
 
@@ -59,7 +64,7 @@ Estimated Time: 4 hr.
 
         var ownMoney = initialMoney;
 
-        var account = Account(nextAccount++);  
+        var account = Account();  
 
         return{
           earnMoney : function(quantity){
