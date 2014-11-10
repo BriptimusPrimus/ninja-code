@@ -17,18 +17,19 @@ Estimated Time: 1 hr <.
   <body>
     <script type="text/javascript">
 
-      function addRec(arr){
+      function addRec(arr, from){
         if(!arr){
           return 0;
         }
-        if (arr.length <= 1){
-          return arr[0] || 0;
+        from = from || 0;
+        if (from >= arr.length - 1){
+          return arr[from] || 0;
         }
-        return arr[0] + addRec(arr.slice(1, arr.length));
+        return arr[from] + addRec(arr, ++from);
       }
 
       var arr = [ 1, 3, 5, 7];
-      assert(addRec(arr) == 16, "addRec(arr) == [ 1, 3, 5, 7]");
+      assert(addRec(arr) == 16, "addRec([ 1, 3, 5, 7]) == 16");
       var arr = [];
       assert(addRec(arr) == 0, "addRec([]) == 0");
       assert(addRec() == 0, "addRec() == 0");
