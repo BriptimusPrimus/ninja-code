@@ -17,12 +17,101 @@
   <head>
     <title>Chapter 05, ex 01, Bank</title>
     <script type="text/javascript" src="../../scripts/assert.js"></script>
+    <script type="text/javascript" src="User.js"></script>
+    <script type="text/javascript" src="Equipment.js"></script>
+    <script type="text/javascript" src="Room.js"></script>
+    <script type="text/javascript" src="Floor.js"></script>
+
     <link href="../../styles/assert.css" rel="stylesheet" type="text/css">
   </head>
   <body>
     <script type="text/javascript">
 
+      function Building(){
 
+        var floors = [];
+
+        return {
+
+          addFloors : function(){
+            for (var i = 0; i < arguments.length; i++) {
+              floors.push(arguments[i]);
+            };
+          },
+
+          // main searching algorithm
+          findEquipment : function(id){
+
+            this.cache = this.cache || {};
+            if(this.cache[id] != null){
+              console.log("Found at cache: Equipment number " +  this.cache[id]);
+              return this.cache[id];
+            }
+
+            for (var i = 0; i < floors.length; i++) {
+              console.log("Floor number " + i);              
+              var eq = null;
+              if (eq = floors[i].getEquipmentById(id)){
+                return this.cache[id] = eq;
+              }
+            };
+            return null;
+          }
+
+        }
+
+      }
+
+
+
+      // UNIT TESTS
+
+      var building = Building();
+      building.addFloors(
+        Floor(
+          Room(), 
+          Room().addEquipment(
+            Equipment()
+          // ).addUsers("Joe", "Jill", "Jack", "Alice")
+          ).addUsers(
+            User("Joe"), 
+            User("Jill").setEquipment(Equipment()),
+            User("Jack").setEquipment(Equipment()),
+            User("Alice")
+          )
+        ), 
+        Floor(
+        ), 
+        Floor(
+          Room(), 
+          Room(), 
+          Room().addEquipment(
+            Equipment(), Equipment()
+          )
+        ), 
+        Floor(
+          Room()
+        )
+      );
+
+      assert(building.findEquipment(6) === null, "building.findEquipment(5) === null");
+      console.log("");
+      assert(building.findEquipment(1) !== null, "building.findEquipment(1) !== null");
+      console.log("");
+      assert(building.findEquipment(3) !== null, "building.findEquipment(3) !== null");
+      console.log("");
+      assert(building.findEquipment(5).fix() !== null, "building.findEquipment(5).fix() !== null");
+      console.log("");
+      assert(building.findEquipment(2).fix() !== null, "building.findEquipment(2).fix() !== null");
+      console.log("");      
+      assert(building.findEquipment(1).fix() !== null, "building.findEquipment(1).fix() !== null");
+      console.log("");
+      assert(building.findEquipment(5).fix() !== null, "building.findEquipment(5).fix() !== null");
+      console.log("");
+      assert(building.findEquipment(2).fix() !== null, "building.findEquipment(2).fix() !== null");
+      console.log("");
+
+      console.log(building);
  
     </script>
   </body>
