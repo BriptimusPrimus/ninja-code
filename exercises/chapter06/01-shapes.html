@@ -31,13 +31,11 @@ Estimated Time: 4 h.
 
       }
 
-      function Shape(args){
+      function Shape(){
 
         this.pEdges = [];
 
-        for (var i = 0; i < args.length; i++) {
-          this.pEdges.push(args[i]); 
-        };  
+        this.pEdges = Array.prototype.slice.call(arguments, 0);
 
       }  
       Shape.prototype.fnDisplay = function(){
@@ -100,15 +98,9 @@ Estimated Time: 4 h.
       /// ****************************
       // Quadrilateral
       /// ****************************
-      function Quadrilateral(args){
+      function Quadrilateral(e1, e2, e3, e4){
 
-        if(args.length < 4){
-          //throw error
-          return false;
-        }
-        removed = args.splice(0, 4);
-
-        Shape.call(this, removed); 
+        Shape.call(this, e1, e2, e3, e4); 
 
       }
       Quadrilateral.prototype = Object.create(Shape.prototype);
@@ -140,21 +132,16 @@ Estimated Time: 4 h.
       /// ****************************
       // Square
       /// ****************************
-      function Square(args){        
-        // if(args.length < 4){
-        //   //throw error
-        //   return false;
-        // }
-        // removed = args.splice(0, 4);
-        Quadrilateral.call(this, args);
+      function Square(e1, e2, e3, e4){        
 
-        if (!equalDistances(this.pEdges)){
+        Quadrilateral.call(this, e1, e2, e3, e4);
+
+        if (!equalDistances.call(this, this.pEdges)){
           //throw error
-          return false;          
+          return null;          
         }        
 
         function equalDistances(args){
-          //return true;//**********WRONG**************
           var side = this.fnDistance(
             args[0].x, 
             args[0].y,
@@ -190,15 +177,9 @@ Estimated Time: 4 h.
       /// ****************************
       // Triangle
       /// ****************************
-      function Triangle(args){
+      function Triangle(e1, e2, e3){
 
-        if(args.length < 3){
-          //throw error
-          return false;
-        }
-        removed = args.splice(0, 3);
-
-        Shape.call(this, removed);
+        Shape.call(this, e1, e2, e3);
 
       }
       Triangle.prototype = Object.create(Shape.prototype);
@@ -228,50 +209,60 @@ Estimated Time: 4 h.
 
 
       // Unit Tests
-      s1 = new Shape([
+      s1 = new Shape(
         new Point(-2, 1),
         new Point(-2, 5),        
         new Point(1, 5),
         new Point(1, 1)
-      ]);
+      );
       s1.fnDisplay();
 
-      q1 = new Quadrilateral([
+      q1 = new Quadrilateral(
         new Point(-2, 1),
         new Point(-2, 5),        
         new Point(1, 5),
         new Point(1, 1)
-      ]);
+      );
       q1.fnDisplay();
       console.log("q1 perimeter: " + q1.fnPerimeter());
 
-      q2 = new Quadrilateral([
+      q2 = new Quadrilateral(
         new Point(-3, 1),
         new Point(-1, 5),        
         new Point(1, 5),
         new Point(2, 1)
-      ]);      
+      );      
       q2.fnDisplay();
       console.log("q2 perimeter: " + q2.fnPerimeter());
 
-      // Unit Tests
-      c1 = new Square([
+      c1 = new Square(
         new Point(-2, 1),
         new Point(-2, 4),        
         new Point(1, 4),
         new Point(1, 1)
-      ]);
+      );
       c1.fnDisplay();    
       console.log("c1 perimeter: " + c1.fnPerimeter());
       console.log("c1 area: " + c1.fnArea());
 
-      t1 = new Triangle([
+      t1 = new Triangle(
         new Point(-2, 1),
         new Point(1, 5),
         new Point(1, 1)
-      ]);
+      );
       t1.fnDisplay();
       console.log("t1 perimeter: " + t1.fnPerimeter());      
+
+      c2 = new Square(
+        new Point(-1, 1),
+        new Point(-2, 4),        
+        new Point(1, 4),
+        new Point(1, 1)
+      );      
+      if (c2)
+        console.log("c2 is: " + c2);      
+      else
+        console.log("wrong c2");
 
     </script>
   </body>
