@@ -15,11 +15,6 @@ Estimated Time: 4 h.
   <head>
     <title>Chapter 05, ex 01, Bank</title>
     <script type="text/javascript" src="../../scripts/assert.js"></script>
-    <script type="text/javascript" src="User.js"></script>
-    <script type="text/javascript" src="Equipment.js"></script>
-    <script type="text/javascript" src="Room.js"></script>
-    <script type="text/javascript" src="Floor.js"></script>
-
     <link href="../../styles/assert.css" rel="stylesheet" type="text/css">
   </head>
   <body>
@@ -48,7 +43,7 @@ Estimated Time: 4 h.
       Shape.prototype.fnDisplay = function(){
         console.log("");
         console.log("Displaying shape: "); 
-        for (var i = 0; i < pEdges.length; i++) {
+        for (var i = 0; i < this.pEdges.length; i++) {
           console.log("point[" + i + "]: x = " 
             + this.pEdges[i].x + ", y = " + this.pEdges[i].y);
         };
@@ -130,11 +125,12 @@ Estimated Time: 4 h.
           this.pEdges[0].x, 
           this.pEdges[0].y,
           this.pEdges[this.pEdges.length - 1].x,
-          this.pEdges[this.pEdges.length - 1].y);
+          this.pEdges[this.pEdges.length - 1].y
+        );
         for (var i = 1; i < this.pEdges.length; i++) {
           perimeter += this.fnDistance(
             this.pEdges[i].x, this.pEdges[i].y,
-            this.pEdges[i - 1].x, this.pEdges[i - 1].y,
+            this.pEdges[i - 1].x, this.pEdges[i - 1].y
           );
         };
         return perimeter;
@@ -158,6 +154,7 @@ Estimated Time: 4 h.
         }        
 
         function equalDistances(args){
+          //return true;//**********WRONG**************
           var side = this.fnDistance(
             args[0].x, 
             args[0].y,
@@ -166,7 +163,7 @@ Estimated Time: 4 h.
           for (var i = 1; i < args.length; i++) {
             if (side != this.fnDistance(
               args[i].x, args[i].y,
-              args[i - 1].x, args[i - 1].y,
+              args[i - 1].x, args[i - 1].y
             )){
               return false;
             }
@@ -190,9 +187,18 @@ Estimated Time: 4 h.
         return 4 * sideLong;        
       }
 
+      /// ****************************
+      // Triangle
+      /// ****************************
       function Triangle(args){
 
-        Shape.call(this, args);
+        if(args.length < 3){
+          //throw error
+          return false;
+        }
+        removed = args.splice(0, 3);
+
+        Shape.call(this, removed);
 
       }
       Triangle.prototype = Object.create(Shape.prototype);
@@ -213,11 +219,59 @@ Estimated Time: 4 h.
         for (var i = 1; i < this.pEdges.length; i++) {
           perimeter += this.fnDistance(
             this.pEdges[i].x, this.pEdges[i].y,
-            this.pEdges[i - 1].x, this.pEdges[i - 1].y,
+            this.pEdges[i - 1].x, this.pEdges[i - 1].y
           );
         };
         return perimeter;
       }
+
+
+
+      // Unit Tests
+      s1 = new Shape([
+        new Point(-2, 1),
+        new Point(-2, 5),        
+        new Point(1, 5),
+        new Point(1, 1)
+      ]);
+      s1.fnDisplay();
+
+      q1 = new Quadrilateral([
+        new Point(-2, 1),
+        new Point(-2, 5),        
+        new Point(1, 5),
+        new Point(1, 1)
+      ]);
+      q1.fnDisplay();
+      console.log("q1 perimeter: " + q1.fnPerimeter());
+
+      q2 = new Quadrilateral([
+        new Point(-3, 1),
+        new Point(-1, 5),        
+        new Point(1, 5),
+        new Point(2, 1)
+      ]);      
+      q2.fnDisplay();
+      console.log("q2 perimeter: " + q2.fnPerimeter());
+
+      // Unit Tests
+      c1 = new Square([
+        new Point(-2, 1),
+        new Point(-2, 4),        
+        new Point(1, 4),
+        new Point(1, 1)
+      ]);
+      c1.fnDisplay();    
+      console.log("c1 perimeter: " + c1.fnPerimeter());
+      console.log("c1 area: " + c1.fnArea());
+
+      t1 = new Triangle([
+        new Point(-2, 1),
+        new Point(1, 5),
+        new Point(1, 1)
+      ]);
+      t1.fnDisplay();
+      console.log("t1 perimeter: " + t1.fnPerimeter());      
 
     </script>
   </body>
