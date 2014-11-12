@@ -1,0 +1,224 @@
+<!-- 
+1. Create a set of object types that describe a series of related objects that may share behavior and/or attributes. 
+Code the example and another set of classes different from the example. Add properties/methods as needed. 
+    Example:
+    Shape { pEdges, fnDisplay }
+    Quadrilateral is Shape { fnArea, fnPerimeter} 
+    Square is Quadrilateral { }
+    Triangle is Shape {fnArea, fnPerimeter}
+    Use of inheritance, prototype, and function overwriting.
+Estimated Time: 4 h.
+-->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Chapter 05, ex 01, Bank</title>
+    <script type="text/javascript" src="../../scripts/assert.js"></script>
+    <script type="text/javascript" src="User.js"></script>
+    <script type="text/javascript" src="Equipment.js"></script>
+    <script type="text/javascript" src="Room.js"></script>
+    <script type="text/javascript" src="Floor.js"></script>
+
+    <link href="../../styles/assert.css" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <script type="text/javascript">
+
+      /// ****************************
+      // Point
+      /// ****************************
+      function Point(x, y){
+
+        this.x = x;
+
+        this.y = y;
+
+      }
+
+      function Shape(args){
+
+        this.pEdges = [];
+
+        for (var i = 0; i < args.length; i++) {
+          this.pEdges.push(args[i]); 
+        };  
+
+      }  
+      Shape.prototype.fnDisplay = function(){
+        console.log("");
+        console.log("Displaying shape: "); 
+        for (var i = 0; i < pEdges.length; i++) {
+          console.log("point[" + i + "]: x = " 
+            + this.pEdges[i].x + ", y = " + this.pEdges[i].y);
+        };
+      };
+      Shape.prototype.fnDistance = function(){
+
+        function distance2D(x1, y1, x2, y2){
+          return Math.sqrt(
+            Math.pow((x1 - x2), 2) + 
+            Math.pow((y1 -y2), 2));              
+        }
+        
+        function distance3D(x1, y1, z1, x2, y2, z2){
+          return Math.sqrt(
+            Math.pow((x1 - x2), 2) + 
+            Math.pow((y1 -y2), 2) +
+            Math.pow(z1 - z2, 2));          
+        }        
+
+        if (arguments.length == 2){
+          var p1 = arguments[0];
+          var p2 = arguments[1];
+          if (p1.length != p2.length){
+            console.log("Different sized arrays");
+            return undefined;            
+          }
+          if(p1.length == 2)
+          {
+            distance2D(p1[0], p1[1], p2[0], p2[1]);
+          }
+          else if(p1.length == 3){
+            distance3D(p1[0], p1[1], p1[2], p2[0], p2[1], p2[2]);
+          }
+          else{
+            console.log("Wrong number of parameters");
+          }
+        }
+        else if (arguments.length == 4)
+        {
+            return distance2D(arguments[0], arguments[1], 
+              arguments[2], arguments[3]);
+        }
+        else if (arguments.length == 6){
+            return distance3D(arguments[0], arguments[1], arguments[2], 
+              arguments[3], arguments[4], arguments[5]);
+        }
+        else{
+          console.log("Wrong number of parameters");
+          return undefined;
+        }
+      };
+
+
+      /// ****************************
+      // Quadrilateral
+      /// ****************************
+      function Quadrilateral(args){
+
+        if(args.length < 4){
+          //throw error
+          return false;
+        }
+        removed = args.splice(0, 4);
+
+        Shape.call(this, removed); 
+
+      }
+      Quadrilateral.prototype = Object.create(Shape.prototype);
+      Quadrilateral.prototype.constructor = Quadrilateral;
+      Quadrilateral.prototype.fnArea = function(){
+        // non supported operation
+        return false;   
+      }
+      Quadrilateral.prototype.fnPerimeter = function(){
+        if (this.pEdges.length < 2){
+          return 0;
+        }
+        var perimeter = this.fnDistance(
+          this.pEdges[0].x, 
+          this.pEdges[0].y,
+          this.pEdges[this.pEdges.length - 1].x,
+          this.pEdges[this.pEdges.length - 1].y);
+        for (var i = 1; i < this.pEdges.length; i++) {
+          perimeter += this.fnDistance(
+            this.pEdges[i].x, this.pEdges[i].y,
+            this.pEdges[i - 1].x, this.pEdges[i - 1].y,
+          );
+        };
+        return perimeter;
+      }
+
+
+      /// ****************************
+      // Square
+      /// ****************************
+      function Square(args){        
+        // if(args.length < 4){
+        //   //throw error
+        //   return false;
+        // }
+        // removed = args.splice(0, 4);
+        Quadrilateral.call(this, args);
+
+        if (!equalDistances(this.pEdges)){
+          //throw error
+          return false;          
+        }        
+
+        function equalDistances(args){
+          var side = this.fnDistance(
+            args[0].x, 
+            args[0].y,
+            args[args.length - 1].x,
+            args[args.length - 1].y);
+          for (var i = 1; i < args.length; i++) {
+            if (side != this.fnDistance(
+              args[i].x, args[i].y,
+              args[i - 1].x, args[i - 1].y,
+            )){
+              return false;
+            }
+          };
+          return true;
+        }
+
+      }
+      Square.prototype = Object.create(Quadrilateral.prototype);
+      Square.prototype.constructor = Square;
+      Square.prototype.fnArea = function(){
+        var sideLong = this.fnDistance(
+          this.pEdges[0].x, this.pEdges[0].y,
+          this.pEdges[1].x, this.pEdges[1].y);        
+        return sideLong * sideLong;
+      }
+      Square.prototype.fnPerimeter = function(){
+        var sideLong = this.fnDistance(
+          this.pEdges[0].x, this.pEdges[0].y,
+          this.pEdges[1].x, this.pEdges[1].y);        
+        return 4 * sideLong;        
+      }
+
+      function Triangle(args){
+
+        Shape.call(this, args);
+
+      }
+      Triangle.prototype = Object.create(Shape.prototype);
+      Triangle.prototype.constructor = Triangle;
+      Triangle.prototype.fnArea = function(){
+        // non supported operation
+        return false;   
+      }
+      Triangle.prototype.fnPerimeter = function(){
+        if (this.pEdges.length < 2){
+          return 0;
+        }
+        var perimeter = this.fnDistance(
+          this.pEdges[0].x, 
+          this.pEdges[0].y,
+          this.pEdges[this.pEdges.length - 1].x,
+          this.pEdges[this.pEdges.length - 1].y);
+        for (var i = 1; i < this.pEdges.length; i++) {
+          perimeter += this.fnDistance(
+            this.pEdges[i].x, this.pEdges[i].y,
+            this.pEdges[i - 1].x, this.pEdges[i - 1].y,
+          );
+        };
+        return perimeter;
+      }
+
+    </script>
+  </body>
+</html>
