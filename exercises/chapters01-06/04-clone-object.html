@@ -1,0 +1,52 @@
+<!-- 
+Create a function that can clone either all or specific properties of an object into another. The functionality should depend on the arguments received. 
+-->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Chapter 00, ex 04, Clone Object</title>
+    <script type="text/javascript" src="../../scripts/assert.js"></script>
+    <link href="../../styles/assert.css" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <script type="text/javascript">
+
+      function cloneProperties(source, target, props){
+        if (props){
+          for (var i = 0; i < props.length; i++) {
+            target[props[i]] = source[props[i]];
+          };
+        }
+        else{
+          for (var key in source) {
+            target[key] = source[key];
+          };
+        }
+      }
+
+      var o1 = {
+        a : 33,
+        b : "aloha",
+        c : [1,2,3,4],
+        d : {},
+        e : 4.7
+      }
+
+      var o2 = {}, o3 = {};
+
+      cloneProperties(o1, o2);
+      console.log("\n o2 properties: ");      
+      for (var key in o2) {
+        console.log(key + " : " + o2[key]);
+      };
+
+      cloneProperties(o1, o3, ["a", "c", "d"]);
+      console.log("\n o3 properties: ");
+      for (var key in o3) {
+        console.log(key + " : " + o3[key]);
+      };
+
+    </script>
+  </body>
+</html>

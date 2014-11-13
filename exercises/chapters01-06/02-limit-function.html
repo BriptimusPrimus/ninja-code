@@ -1,0 +1,49 @@
+<!-- 
+Create a function that can limit the execution of other functions to a determined amount of times. 
+Example:
+function limitFunc (fn, num) { ... }
+var limited = limitFunc (fn, 2);
+limited (); // executes fine
+limited (); // executes fine
+limited (); // does not execute
+-->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Chapter 00, ex 02, Limit Function</title>
+    <script type="text/javascript" src="../../scripts/assert.js"></script>
+    <link href="../../styles/assert.css" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <script type="text/javascript">
+
+      function limitFunc (fn, num) { 
+
+        var callback = fn;
+        var max = num;
+        var times = 0;
+        
+        return function()
+        {
+          if (++times > max){
+            return null;
+          }
+          return callback.apply(this, arguments);
+        }
+      }                  
+
+      // Unit Tests
+
+      var limited = limitFunc (function(x, y){
+        console.log("executing function");
+        console.log("x = " + x + ", y = " + y);
+        return true;
+      }, 2);
+      assert(limited(1, 4), "limited(1, 4) executes fine"); 
+      assert(limited(5, 3, 7, 1), "limited(5, 3, 7, 1) executes fine");       
+      assert(!limited(0, 0), "limited(1,1) does not execute");            
+
+    </script>
+  </body>
+</html>

@@ -1,0 +1,60 @@
+<!-- 
+Given an array of words, write a function that will sort the array in ascending order. It should also take an optional argument that can customize the sorting order. Custom sorting orders:
+  a. descending
+  b. sort by length ascending/descending
+  c. sort by number of consonants ascending/descending. 
+
+-->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Chapter 00, ex 01, Sort Words</title>
+    <script type="text/javascript" src="../../scripts/assert.js"></script>
+    <link href="../../styles/assert.css" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <script type="text/javascript">
+
+      function sortWords(words, desc, callback){
+        if(callback){
+          words.sort(callback);
+        }
+        else{
+          words.sort();
+        }
+        if (desc){
+          words.reverse();
+        }
+      }
+
+      var w1 = ["caax", "aghx", "bbr", "aazxxa", "babxx"];
+      console.log("before sorting: " + w1.toString());      
+      
+      sortWords(w1);
+      console.log("after sorting: " + w1.toString());
+
+      sortWords(w1, false, function(w1, w2){         
+        return w1.length - w2.length; 
+      });      
+      console.log("sort by length: " + w1.toString());
+
+      sortWords(w1, true);
+      console.log("sorting descending: " + w1.toString());
+
+      sortWords(w1, false, 
+          function(w1, w2){         
+            return w1.length - w2.length; 
+          }
+      );
+      console.log("sort by length: " + w1.toString());
+
+      sortWords(w1, true, function(w1, w2){         
+        return w1.length - w2.length; 
+      });      
+      console.log("sort by length descending: " + w1.toString());      
+
+
+    </script>
+  </body>
+</html>

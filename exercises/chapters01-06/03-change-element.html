@@ -1,0 +1,39 @@
+<!-- 
+Create a function that will set the color, font-size, and background color of a div element.
+If there are fewer arguments, it should place a default value. 
+Use the this parameter to access the values.
+-->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Chapter 00, ex 03, Change Element</title>
+    <script type="text/javascript" src="../../scripts/assert.js"></script>
+    <link href="../../styles/assert.css" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <div id="aloha">changed ALOHA</div>
+    <div id="ohio">set OHIO to defaults</div>
+    <script type="text/javascript">
+
+      function changeElement(element, color, size, bgcolor){
+        element.style.color = "white";
+        element.style.fontSize = "2em";
+        element.style.background = "black";
+
+        if (arguments.length > 1)
+          element.style.color = color;
+        if (arguments.length > 2)
+           element.style.fontSize = size;
+        if (arguments.length > 3)
+          element.style.background = bgcolor;
+      }
+
+      var e1 = document.getElementById("aloha");
+      var e2 = document.getElementById("ohio");      
+      changeElement(e1, "red", "25px", "blue");
+      changeElement(e2);
+
+    </script>
+  </body>
+</html>

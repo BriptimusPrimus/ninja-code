@@ -13,7 +13,7 @@ Estimated Time: 4 h.
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Chapter 05, ex 01, Bank</title>
+    <title>Chapter 06, ex 01, Shapes</title>
     <script type="text/javascript" src="../../scripts/assert.js"></script>
     <link href="../../styles/assert.css" rel="stylesheet" type="text/css">
   </head>
@@ -209,7 +209,7 @@ Estimated Time: 4 h.
 
 
       // Unit Tests
-      s1 = new Shape(
+      var s1 = new Shape(
         new Point(-2, 1),
         new Point(-2, 5),        
         new Point(1, 5),
@@ -217,7 +217,7 @@ Estimated Time: 4 h.
       );
       s1.fnDisplay();
 
-      q1 = new Quadrilateral(
+      var q1 = new Quadrilateral(
         new Point(-2, 1),
         new Point(-2, 5),        
         new Point(1, 5),
@@ -226,7 +226,7 @@ Estimated Time: 4 h.
       q1.fnDisplay();
       console.log("q1 perimeter: " + q1.fnPerimeter());
 
-      q2 = new Quadrilateral(
+      var q2 = new Quadrilateral(
         new Point(-3, 1),
         new Point(-1, 5),        
         new Point(1, 5),
@@ -235,7 +235,7 @@ Estimated Time: 4 h.
       q2.fnDisplay();
       console.log("q2 perimeter: " + q2.fnPerimeter());
 
-      c1 = new Square(
+      var c1 = new Square(
         new Point(-2, 1),
         new Point(-2, 4),        
         new Point(1, 4),
@@ -245,7 +245,7 @@ Estimated Time: 4 h.
       console.log("c1 perimeter: " + c1.fnPerimeter());
       console.log("c1 area: " + c1.fnArea());
 
-      t1 = new Triangle(
+      var t1 = new Triangle(
         new Point(-2, 1),
         new Point(1, 5),
         new Point(1, 1)
@@ -253,7 +253,7 @@ Estimated Time: 4 h.
       t1.fnDisplay();
       console.log("t1 perimeter: " + t1.fnPerimeter());      
 
-      c2 = new Square(
+      var c2 = new Square(
         new Point(-1, 1),
         new Point(-2, 4),        
         new Point(1, 4),
