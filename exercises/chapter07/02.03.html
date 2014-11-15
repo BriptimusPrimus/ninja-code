@@ -1,0 +1,40 @@
+<!-- 
+txt, java, and cpp files with names consisting of only letters
+example
+test.java
+program.cpp
+newReport.txt
+
+-->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Chapter 07, ex 02.03</title>
+    <script type="text/javascript" src="../../scripts/assert.js"></script>
+    <link href="../../styles/assert.css" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <script type="text/javascript">
+
+      function testRegExp(input){
+        var reg = /^([A-Z,a-z]+)\.((java)|(cpp)|(txt))$/;
+        return reg.test(input);
+      }
+
+      // Unit Tests
+      assert(testRegExp("test.java"), "test.java");
+      assert(!testRegExp("test?java"), "NOT test?java");      
+      assert(testRegExp("Test.java"), "Test.java");
+      assert(testRegExp("program.cpp"), "program.cpp");
+      assert(testRegExp("newReport.txt"), "newReport.txt");
+      assert(testRegExp("xxxxx.txt"), "xxxxx.txt");      
+      assert(testRegExp("YYYYY.txt"), "YYYYY.txt");            
+      assert(!testRegExp("27x"), "NOT 27x");
+      assert(!testRegExp("33xx"), "NOT 33xx");
+      assert(!testRegExp("program.cPp"), "NOT program.cPp");
+      assert(!testRegExp("t3st.java"), "NOT t3st.java");
+
+    </script>
+  </body>
+</html>

@@ -1,0 +1,136 @@
+<!-- 
+Create a tree structure and a function that will display all of the elements in that tree. The function should not require any change in case the structure changes.
+Example of tree structure:
+
+        A 
+     /  |    \
+   a    b    c
+   |   /  |     | \
+ aa ba bb  ca cb
+                      |
+                      cba 
+-->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Chapter 00, ex 06, Tree Structure</title>
+    <script type="text/javascript" src="../../scripts/assert.js"></script>
+    <link href="../../styles/assert.css" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <script type="text/javascript">
+
+      function DirectedGraphNode(symbol, weight){
+
+        this.symbol = symbol || 0;
+
+        this.weight = weight || 0;
+
+        this.neighbors = [];
+
+      }
+
+      function Tree(root){
+
+        function displayAll(n){
+          console.log("Node[" + n.symbol + "] = " + n.weight);
+          for (var i = 0; i < n.neighbors.length; i++) {
+            displayAll(n.neighbors[i]);
+          };
+        }
+
+        this.root = root || new DirectedGraphNode();        
+
+        this.display = function(){
+          console.log("executing display")
+          displayAll(this.root);
+        }
+      }
+
+      function graphFactory(matrix){
+        var nodes = [];
+        for (var i = 0; i < matrix.length; i++) {
+          nodes.push(new DirectedGraphNode(i + 65));
+        };
+        for (var i = 0; i < matrix.length; i++) {
+          for (var j = 0; j < matrix[i].length; j++) {
+            if (matrix[i][j] == 1){              
+              nodes[i].neighbors.push(nodes[j]);
+            }
+          };
+        };
+        return nodes;
+      }
+
+      function evalMatrix(matrix){
+
+        //print the matrix
+        var str = "";
+        for (var i = 0; i < matrix.length; i++) {          
+          str += "\n";
+          for (var j = 0; j < matrix[i].length; j++) {
+            str += matrix[i][j];
+          };
+        };        
+        console.log(str);
+
+        // build the graph
+        var arr = graphFactory(matrix);
+
+        // build the tree
+        var root = arr.length > 0 ? arr[0] : null;
+        var tree = new Tree(root);
+
+        //display all of the elements in the tree
+        tree.display();
+      }
+
+      //Warning: if no tree, could occur infinite loop
+      function main(){
+
+            var mat0 = [
+              [ 0, 1, 0, 1 ], 
+              [ 0, 0, 0, 0 ],
+              [ 0, 0, 0, 0 ],
+              [ 0, 0, 1, 0 ]                               
+            ];
+            //evalMatrix(mat0);
+
+            var mat1 = [ 
+                //A  B  C  D  E  F  G  H  I  J  K  L  M  N  O  P  Q  R  S  T  U  V  W  X  Y  Z
+                [ 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ], //A
+                [ 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ], //B
+                [ 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ], //C
+                [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ], //D
+                [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ], //E
+                [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ], //F
+                [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ], //G
+                [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ], //H
+                [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 ], //I
+                [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0 ], //J
+                [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ], //K
+                [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ], //L
+                [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ], //M
+                [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ], //N
+                [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0 ], //O
+                [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ], //P
+                [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ], //Q
+                [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ], //R
+                [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0 ], //S
+                [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1 ], //T
+                [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ], //U
+                [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ], //V
+                [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ], //W
+                [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ], //X
+                [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ], //Y
+                [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ]  //Z       
+            ];            
+            evalMatrix(mat1); 
+      }
+
+      main();
+
+    </script>
+  </body>
+</html>

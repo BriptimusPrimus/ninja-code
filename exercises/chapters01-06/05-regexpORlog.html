@@ -1,0 +1,54 @@
+<!-- 
+Create a function that will:
+return the number of vowels in a string
+return the number of digits in a whole number using log math operations.
+    Must be the same function.
+-->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Chapter 00, ex 05, Reg Exp</title>
+    <script type="text/javascript" src="../../scripts/assert.js"></script>
+    <link href="../../styles/assert.css" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <script type="text/javascript">
+
+      function numberOrVowelsOrDigits(input){
+        if (typeof input == "string"){
+          var a = input.match(/[aeiou]/ig);
+          return a ? a.length : 0;
+        }else if (typeof input == "number"){
+          return Math.floor(Math.LOG10E*Math.log(input))+1;      
+        }
+      } 
+
+      assert(numberOrVowelsOrDigits("abcdefghiAEIjklmno") == 7,    
+        "abcdefghiAEIjklmno number of vowels: 7");
+      console.log("abcdefghiAEIjklmno number of vowels: " + 
+        numberOrVowelsOrDigits("abcdefghiAEIjklmno")); 
+
+      assert(numberOrVowelsOrDigits(1763) == 4,
+        "1763 number of digits: 4");
+      console.log("1763 number of digits: " + 
+        numberOrVowelsOrDigits(1763)); 
+
+      assert(numberOrVowelsOrDigits(999999999) == 9,
+        "999999999 number of digits: 9");
+      console.log("999999999 number of digits: " + 
+        numberOrVowelsOrDigits(999999999));   
+
+      assert(numberOrVowelsOrDigits(999999999999) == 12,
+        "999999999999 number of digits: 12");
+      console.log("999999999999 number of digits: " + 
+        numberOrVowelsOrDigits(999999999999));             
+
+      assert(numberOrVowelsOrDigits(999999999999999999) == 18,
+        "999999999999999999 number of digits: 18");
+      console.log("999999999999999999 number of digits: " + 
+        numberOrVowelsOrDigits(999999999999999999));       
+
+    </script>
+  </body>
+</html>

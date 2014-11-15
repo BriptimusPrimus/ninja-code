@@ -1,0 +1,36 @@
+<!-- 
+A 5 character palindrome
+example
+abcba
+12321
+_1a1_
+-->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Chapter 07, ex 02.04</title>
+    <script type="text/javascript" src="../../scripts/assert.js"></script>
+    <link href="../../styles/assert.css" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <script type="text/javascript">
+
+      function testRegExp(input){
+        var reg = /^(.)(.).\2\1$/;
+        return reg.test(input);
+      }
+
+      // Unit Tests
+      assert(testRegExp("abcba"), "abcba");  
+      assert(!testRegExp("abcbax"), "NOT abcbax");  
+      assert(!testRegExp("yabcba"), "NOT yabcba");        
+      assert(!testRegExp("abcbaabcba"), "NOT abcbaabcba");        
+      assert(testRegExp("12321"), "12321");      
+      assert(testRegExp("_1a1_"), "_1a1_");      
+      assert(!testRegExp("NOT 123221"), "NOT 123221");      
+      assert(!testRegExp("test.java"), "NOT test.java");
+
+    </script>
+  </body>
+</html>

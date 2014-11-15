@@ -1,0 +1,31 @@
+<!-- 
+All the non nested tag elements in a string
+example
+string:    “This is a <span>good</span> day for a <span>regex exp!</span>.”
+results:        <span>good</span>, <span>regex exp!</span>
+
+-->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Chapter 07, ex 02.05</title>
+    <script type="text/javascript" src="../../scripts/assert.js"></script>
+    <link href="../../styles/assert.css" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <script type="text/javascript">
+
+      function testRegExp(input){
+        var reg = /^$/i;
+        return reg.test(input);
+      }
+
+      // Unit Tests
+      assert(testRegExp("This is a <span>good</span> day for a <span>regex exp!</span>."), 
+        "This is a <span>good</span> day for a <span>regex exp!</span>.");  
+
+
+    </script>
+  </body>
+</html>

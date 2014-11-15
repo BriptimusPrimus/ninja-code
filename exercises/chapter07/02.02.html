@@ -1,0 +1,45 @@
+<!-- 
+Write a regular expression that can match:
+A letter followed OR preceded by a number
+example:
+  a52
+  d747
+  27X
+  V2
+-->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Chapter 07, ex 02.02</title>
+    <script type="text/javascript" src="../../scripts/assert.js"></script>
+    <link href="../../styles/assert.css" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <script type="text/javascript">
+
+      function testRegExp(input){
+      //var reg = /^(([0-9]+)[A-Z])|([A-Z]([0-9]+))$/i
+        var reg = /^([A-Z]([0-9]+))|(([0-9]+)[A-Z])$/i        
+
+        return reg.test(input);
+      }
+
+      // Unit Tests
+      assert(testRegExp("a5"), "a5");
+      assert(testRegExp("5a"), "5a");
+      assert(testRegExp("a52"), "a52");
+      assert(testRegExp("A52"), "A52");
+      assert(testRegExp("d747"), "d747");
+      assert(testRegExp("27x"), "27x");
+
+      assert(testRegExp("x33"), "x33");
+      assert(!testRegExp("33xx"), "NOT 33xx");
+      assert(!testRegExp("xx33"), "NOT xx33");
+      assert(!testRegExp("3&x"), "NOT 3&x");
+      assert(!testRegExp("5555"), "NOT 5555");
+      assert(!testRegExp("y"), "NOT y");
+
+    </script>
+  </body>
+</html>

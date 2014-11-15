@@ -1,0 +1,38 @@
+<!-- 
+All words that consist of letters from b to y only
+  example
+  Bee Crow mouse you        // acceptable
+  Ape Eagle Zorro  zapp    // not acceptable
+-->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Chapter 07, ex 02.05</title>
+    <script type="text/javascript" src="../../scripts/assert.js"></script>
+    <link href="../../styles/assert.css" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <script type="text/javascript">
+
+      function testRegExp(input){
+        var reg = /^([b-y]| )+$/i;
+        return reg.test(input);
+      }
+
+      // Unit Tests
+      assert(testRegExp("mouse"), "mouse");  
+      assert(testRegExp("you"), "you");  
+      assert(testRegExp("Bee Crow mouse you"), "Bee Crow mouse you");  
+
+      assert(!testRegExp("Ape Eagle Zorro  zapp"), "NOT Ape Eagle Zorro  zapp");        
+      assert(!testRegExp("abcbax"), "NOT abcbax");  
+      assert(!testRegExp("Eagle,mouse"), "NOT Eagle,mouse");        
+      assert(!testRegExp("12321"), "NOT 12321");      
+      assert(!testRegExp("_bbb_"), "NOT _bbb_");      
+      assert(!testRegExp("NOT 123221"), "NOT 123221");      
+      assert(!testRegExp("test.txt"), "NOT test.txt");
+
+    </script>
+  </body>
+</html>

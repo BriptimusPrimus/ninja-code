@@ -28,32 +28,61 @@ Given an array of words, write a function that will sort the array in ascending 
         }
       }
 
-      var w1 = ["caax", "aghx", "bbr", "aazxxa", "babxx"];
-      console.log("before sorting: " + w1.toString());      
+      var words = ["ciox", "aghx", "bbr", "aazxxe", "babxx"];
+      console.log("before sorting: " + words.toString());      
       
-      sortWords(w1);
-      console.log("after sorting: " + w1.toString());
+      sortWords(words);
+      console.log("after sorting: " + words.toString());
 
-      sortWords(w1, false, function(w1, w2){         
-        return w1.length - w2.length; 
+      sortWords(words, false, function(w1, w2){         
+        return w2.length - w1.length; 
       });      
-      console.log("sort by length: " + w1.toString());
+      console.log("sort by length: " + words.toString());
 
-      sortWords(w1, true);
-      console.log("sorting descending: " + w1.toString());
+      sortWords(words, true);
+      console.log("sorting descending: " + words.toString());
 
-      sortWords(w1, false, 
-          function(w1, w2){         
-            return w1.length - w2.length; 
-          }
-      );
-      console.log("sort by length: " + w1.toString());
+      sortWords(words, false, function(w1, w2){         
+            return w2.length - w1.length; 
+      });
+      console.log("sort by length: " + words.toString());
 
-      sortWords(w1, true, function(w1, w2){         
-        return w1.length - w2.length; 
+      sortWords(words, true, function(w1, w2){         
+        return w2.length - w1.length; 
       });      
-      console.log("sort by length descending: " + w1.toString());      
+      console.log("sort by length descending: " + words.toString());      
 
+      sortWords(words, false, function(w1, w2){
+        var a = w1.match(/[aeiou]/ig);
+        var b = w2.match(/[aeiou]/ig);
+        return (b ? b.length : 0) 
+          - (a ? a.length : 0);
+      });
+      console.log("sort by number of vowels: " + words.toString());
+
+      sortWords(words, true, function(w1, w2){
+        var a = w1.match(/[aeiou]/ig);
+        var b = w2.match(/[aeiou]/ig);
+        return (b ? b.length : 0) 
+          - (a ? a.length : 0);
+      });
+      console.log("sort by number of vowels descending: " + words.toString());
+
+      sortWords(words, false, function(w1, w2){
+        var a = w1.match(/[^aeiou]/ig);
+        var b = w2.match(/[^aeiou]/ig);
+        return (b ? b.length : 0) 
+          - (a ? a.length : 0);
+      });
+      console.log("sort by number of consonants: " + words.toString());
+
+      sortWords(words, true, function(w1, w2){
+        var a = w1.match(/[b-z&&[^eiou]]/ig);
+        var b = w2.match(/[b-z&&[^eiou]]/ig);
+        return (b ? b.length : 0) 
+          - (a ? a.length : 0);
+      });
+      console.log("sort by number of consonants descending: " + words.toString());            
 
     </script>
   </body>
