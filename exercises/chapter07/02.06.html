@@ -22,8 +22,10 @@ results:        <span>good</span>, <span>regex exp!</span>
       }
 
       // Unit Tests
-      assert(testRegExp("This is a <span>good</span> day for a <span>regex exp!</span>."), 
-        "This is a <span>good</span> day for a <span>regex exp!</span>.");  
+      assert(testRegExp("This is a <span>good</span> day for a <span>regex exp!</span>."
+        == "<span>good</span>, <span>regex exp!</span>"), 
+        "This is a <span>good</span> day for a <span>regex exp!</span>.
+        = <span>good</span>, <span>regex exp!</span>");  
 
 
     </script>
