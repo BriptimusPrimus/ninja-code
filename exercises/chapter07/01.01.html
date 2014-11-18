@@ -1,0 +1,38 @@
+<!-- 
+1. Create a function that will transform a hex number into an rgb format.
+        Example:
+        “#3020ff”         →         “rgb ( 48, 32, 255)”
+        Use of regular expressions
+Estimated Time: 30 min<.
+-->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Chapter 07, ex 01.01</title>
+    <script type="text/javascript" src="../../scripts/assert.js"></script>
+    <link href="../../styles/assert.css" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <script type="text/javascript">
+
+      function hex2rgb(hex){
+        return hex.replace(/#([0-9,a-f]{2})([0-9,a-f]{2})([0-9,a-f]{2})/gi, 
+          function(all, t1, t2, t3){
+            var result = "rgb(" + parseInt(t1, 16)
+                         + ", " + parseInt(t2, 16) 
+                         + ", " + parseInt(t3, 16) + ")";
+            console.log(result);
+            return result;
+          }
+        );
+      }
+
+      assert(hex2rgb("#3020ff") == "rgb(48, 32, 255)", "#3020ff = rgb(48, 32, 255)");
+      assert(hex2rgb("#000000") == "rgb(0, 0, 0)", "#000000 = rgb(0, 0, 0)");
+      assert(hex2rgb("#FFffFf") == "rgb(255, 255, 255)", "#FFffFf = rgb(255, 255, 255)");
+      assert(hex2rgb("#20FF30") == "rgb(32, 255, 48)", "#20FF30 = rgb(32, 255, 48)");
+
+    </script>
+  </body>
+</html>

@@ -1,0 +1,36 @@
+<!-- 
+From a reasonably sized text, have a user defined string be replaced by that same string with a hashtag. That hashtag should be a link for a twitter search as well. 
+example
+String: yolo
+… should never use #yolo for any reason... 
+-->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Chapter 07, ex 02.05</title>
+    <script type="text/javascript" src="../../scripts/assert.js"></script>
+    <link href="../../styles/assert.css" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <script type="text/javascript">
+
+      function substitute(input, keyword){        
+        var regex = new RegExp("(" + keyword +")", "g");
+        var result =
+          input.replace(regex, function(full, text){
+            var t = "<a href='https://twitter.com/search?q=%23"+text+"'>#" + text + "</a>";
+            return t;
+          });  
+        return result;
+      }
+
+      var s = "this is a yolo text that says yolo each time it needs to because yolo.";
+      var t = substitute(s, "yolo");
+      console.log(t);
+      document.write(t);
+
+
+    </script>
+  </body>
+</html>

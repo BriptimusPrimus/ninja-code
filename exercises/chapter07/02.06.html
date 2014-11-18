@@ -17,16 +17,21 @@ results:        <span>good</span>, <span>regex exp!</span>
     <script type="text/javascript">
 
       function testRegExp(input){
-        var reg = /^$/i;
-        return reg.test(input);
+        //var reg = /<(\w+)([^>]*)>(.*)<\/\1>/g;
+        var results = input.match(/(<(\w+)([^>]*)>(.*)<\/\2>)+?/g);
+        console.log("array size: " + results.length);
+        console.log(results[0]);
+        for (var i = 1; i < results.length; i++) {
+          console.log(results[i]);
+        };
+        return results;
       }
 
       // Unit Tests
-      assert(testRegExp("This is a <span>good</span> day for a <span>regex exp!</span>."
-        == "<span>good</span>, <span>regex exp!</span>"), 
-        "This is a <span>good</span> day for a <span>regex exp!</span>.
-        = <span>good</span>, <span>regex exp!</span>");  
-
+      var arr = testRegExp("This is a <span>good</span> day for a <span>regex exp!</span>.");
+      assert(arr.length == 2, "arr.length == 2");
+      assert(arr[0] == "<span>good</span>", "arr[0] = <span>good</span>");
+      //assert(arr[1] == "<span>regex exp!</span>", "arr[1] = <span>regex exp!</span>");
 
     </script>
   </body>
