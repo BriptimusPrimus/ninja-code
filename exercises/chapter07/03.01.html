@@ -19,8 +19,34 @@ ak89 = bl90
     <script type="text/javascript">
 
       function substitute(input){
-
+        return input.replace(/([a-z, A-Z, 0-9])/g, 
+          function shiftNext(all, chr){
+            if(chr === "Z"){
+              return "A";
+            }else if (chr === "z"){
+              return "a";
+            }else if (chr === "9"){
+              return "0";
+            }
+            else if (chr === " "){
+              return " ";
+            }
+            return String.fromCharCode(chr.charCodeAt() + 1);
+          }
+        );
       }
+
+      // Unit >Tests
+      var text = "Abcde fghij klmno xyz ABCDE !#$%&/() 0123456789";
+      var code = text.charCodeAt(0);
+      console.log(code);
+      var shifted = substitute(text);    
+
+      console.log("Original: " + text);
+      console.log("Shifted:  " + shifted);
+
+      assert(shifted == "Bcdef ghijk lmnop yza BCDEF !#$%&/() 1234567890",
+        text + " = Bcdef ghijk lmnop yza BCDEF !#$%&/() 1234567890");
 
     </script>
   </body>

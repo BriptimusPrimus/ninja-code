@@ -13,9 +13,51 @@ http://stackoverflow.com/questions/233243/how-to-check-that-a-string-is-a-palind
   <body>
     <script type="text/javascript">
 
-      function palindromes(input){
-        
+      function palindromesOfFive(input){
+        var regexp = /(\w?)(\w?)(\w?)(\w?)(\w)\w?\5\4\3\2\1/g;        
+        var results = input.match(regexp);
+        return results;  
       }
+
+      // 3:                (\w)\w?\1
+      // 5:           (\w?)(\w)\w?\2\1
+      // 7:      (\w?)(\w?)(\w)\w?\3\2\1
+      // 9: (\w?)(\w?)(\w?)(\w)\w?\4\3\2\1
+      function palindromes(input){
+        var strRegExp = "", head = "", tail = "";
+        var spWords = specialWords(input); console.log(spWords);        
+        if (!spWords || spWords.length < 1){
+          return [];
+        }
+
+        var max = 0;
+        for (var i = 0; i < spWords.length; i++) {
+          max = spWords[i].length > max ? spWords[i].length : max;
+        };
+
+        //build a regular expresion for words the size of this word
+        var half = Math.floor(max / 2);
+        for (var i = half; i > 1; i--) {
+          head += "(\\w?)";
+          tail += "\\" + i;
+        };
+        tail += "\\1";
+        strRegExp = head + "(\\w)\\w?" + tail; console.log("reg exp: " + strRegExp);
+        var regex = new RegExp(strRegExp, "g");
+        return input.match(regex);
+      }
+
+      // words that start and end with the same letter
+      function specialWords(input){
+        return input.match(/(\w)\w*\1/g);
+      }
+
+      //var a1 = palindromesOfFive("aa aba xyzyx abcba abcdedcba xzx a bxx c uyiyu to");
+      var a1 = palindromes("aa aba 1232112321123211232112321 010010010010010 xyzyx abcba abcdedcba xzx a bxx 112232211 c uyiyu to");
+      console.log("aa aba 1232112321123211232112321 010010010010010 xyzyx abcba abcdedcba xzx a bxx 112232211 c uyiyu to: ");
+      for (var i = 0; i < a1.length; i++) {;
+        console.log(a1[i]);
+      };
 
     </script>
   </body>

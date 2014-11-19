@@ -1,0 +1,73 @@
+<!-- 
+2. Create functions A, B, and C that execute every 30s, 1min, and 1min 15s respectively. Use only 1 timer/interval to control all three functions. 
+        use of a central timer controller
+        Estimated Time: 30 min.
+-->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Chapter 08, ex 01.01</title>
+    <script type="text/javascript" src="../../scripts/assert.js"></script>
+    <link href="../../styles/assert.css" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <script type="text/javascript">
+
+      var timers = {                                                  //#1
+
+        timerID: 0,                                                   //#2
+        timers: [],
+        delays: [],                                                   //#2
+
+        add: function(fn, delay) {                                           //#3
+          this.timers.push(fn);
+          this.delays.push(delay);
+        },
+
+        start: function runNext() {                                   //#4
+          if (this.timerID) return;
+          (function() {
+            if (timers.timers.length > 0) {
+              for (var i = 0; i < timers.timers.length; i++) {
+                // if (timers.timers[i]() === false) {
+                //   timers.timers.splice(i,1);
+                //   i--;
+                // }
+                setInterval(timers.timers[i], timers.delays[i]);                
+              }
+              //timers.timerID = setTimeout(runNext, 0);
+            }
+          })();
+        },
+
+        stop: function() {                                             //#5
+          clearTimeout(this.timerID);
+          this.timerID = 0;
+        }
+
+      };
+
+      var A = function(){        
+        console.log("Executing function A");
+        // return true;
+      };
+
+      var B = function(){        
+        console.log("Executing function B");
+        // return true;
+      };
+
+      var C = function(){        
+        console.log("Executing function C");
+        // return true;
+      };
+
+      timers.add(A, 30000);
+      timers.add(B, 60000);
+      timers.add(C, 75000);  
+      timers.start();    
+
+    </script>
+  </body>
+</html>

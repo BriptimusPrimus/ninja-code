@@ -9,6 +9,8 @@
         Spanish-MX: 1/4/2014 → English-US: 4/1/2014 (April fools day)
         Use of regular expressions, and lookup tables
         Estimated Time: 1 hr.
+
+        Cuban holidays: http://efemerides.cuba.cu/feriados.php
 -->
 
 <!DOCTYPE html>
@@ -21,7 +23,84 @@
   <body>
     <script type="text/javascript">
 
+      // Cuban Holidays
+      var cubHolidays = {
 
+        "1/1" : "Revolucion Cubana", 
+
+        "2/1" : "Extension de la Revolucion Cubana", 
+
+        "1/5" : "Dia del Trabajo",
+
+        "25/7" : "Vispera del Asalto al Cuartel Moncada",
+
+        "26/7" : "Asalto al Cuartel Moncada",
+        
+        "27/7" : "Extension del Asalto al Cuartel Moncada",
+
+        "10/10" : "Grito de Yara",
+
+        "25/12" : "Navidad",
+
+        "31/12" : "Fin de Año"
+
+      }
+
+      // USA    07/26/2014
+      // Cuba   26/7/2014 -> Asalto al Cuartel Moncada
+
+      function isFormatedDate(input, reg){        
+        return reg.test(input);
+      }
+
+      function fromUsToCuban(date){
+        // US date format regular expresion
+        var reg = /^((0[1-9]|1[0-2])\/(0[1-9]|1[0-9]|2[0-9]|3[0-1])\/[0-9]{4})$/;
+        if(isFormatedDate(date, reg)){
+          var cuban = date.replace(
+            /^([0-1][0-9]\/[0-9][0-9])\/([0-9]{4})$/,  
+            function(all, mmdd, yyyy){
+              var tokens = mmdd.split("/");
+              return Number(tokens[1]) + "/" + Number(tokens[0]) + "/" + yyyy; 
+            }
+          );
+          return cuban;
+        }
+        return null;
+      }    
+
+      // Unit Tests
+      var usFormat = /^((0[1-9]|1[0-2])\/(0[1-9]|1[0-9]|2[0-9]|3[0-1])\/[0-9]{4})$/;
+      assert(isFormatedDate("07/26/2014", usFormat), "07/26/2014");
+      assert(!isFormatedDate("7/26/2014", usFormat), "NOT 7/26/2014");
+      assert(!isFormatedDate("07/26/14", usFormat), "NOT 07/26/14");
+
+      console.log("us: 07/26/2014 - cub: " + fromUsToCuban("07/26/2014"));
+
+      var d1 = fromUsToCuban("07/26/2014"); 
+      assert(d1 == "26/7/2014", "us: 07/26/2014 - cub: 26/7/2014");
+      assert(cubHolidays[d1.slice(0, -5)] == "Asalto al Cuartel Moncada",
+        "Asalto al Cuartel Moncada")
+
+      var d2 = fromUsToCuban("05/01/2014");
+      assert(d2 == "1/5/2014", "us: 05/01/2014 - cub: 1/5/2014"); 
+      assert(cubHolidays[d2.slice(0, -5)] == "Dia del Trabajo",
+        "Dia del Trabajo");
+
+      var d3 = fromUsToCuban("10/10/2014");
+      assert(d3 == "10/10/2014", "us: 10/10/2014 - cub: 10/10/2014");
+      assert(cubHolidays[d3.slice(0, -5)] == "Grito de Yara",
+        "Grito de Yara");
+
+      var d4 = fromUsToCuban("12/25/2014");
+      assert(d4 == "25/12/2014", "us: 12/25/2014 - cub: 25/12/2014");  
+      assert(cubHolidays[d4.slice(0, -5)] == "Navidad",
+        "Navidad");
+
+      assert(!fromUsToCuban("20/45/2014"), "NOT A DATE: 20/45/2014");
+      
+      var s1 = d1.slice(0, -5); console.log(s1);
+      console.log(cubHolidays[s1]);
 
     </script>
   </body>

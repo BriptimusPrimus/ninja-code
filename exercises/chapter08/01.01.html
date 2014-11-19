@@ -12,9 +12,34 @@ Estimated Time: 10 min <.
     <link href="../../styles/assert.css" rel="stylesheet" type="text/css">
   </head>
   <body>
-    <script type="text/javascript">
+    <script type="text/javascript">            
 
+      function randomMessage(){
 
+        var messages = [
+          "There's a snake in my boot!",
+          "Big Apple, 3 A.M.",
+          "Pizza Time!",
+          "Big brother is watching you",
+          "You must build aditional pylons.",
+          "There is yet insufficient data for a meaningful answer.",
+          "There is a better world, but it's more expensive.",
+          "When you see a fork in the road, take it.",
+          "You have to go to other people funerals, otherwise they won't come to yours.",
+          "All your base are belong to us."
+        ];  
+
+        var duration = 600000;
+        var i = 0;
+        var id = setInterval(function(){
+          var ran = Math.floor((Math.random() * 10) + 1);
+          console.log(messages[ran] + " : " + ++i);
+        }, duration);
+        return id;
+      }
+
+      var interval = randomMessage();
+      //console.log("id: " + interval);
 
     </script>
   </body>
