@@ -21,7 +21,21 @@ Estimated Time: 2 hr.
   <body>
     <script type="text/javascript">            
 
-      
+      function dataParse(str){
+        //wrap in parentheses
+        str = "(" + str + ")";
+        return eval(str);
+      }
+
+      var str = "{prop1: 42, myFn: function(a, b) { return a+b+this.prop1;}}";          
+
+      var obj = dataParse(str);
+
+      assert(obj !== undefined, "The object was created");
+      assert(obj.prop1 == 42, "obj.prop1 ==42");
+      assert(obj.myFn(5,3) == 50, "obj.myFn(5,3) == 50");
+      obj.prop1++;
+      assert(obj.myFn(1,2) == 46, "obj.prop1++; obj.myFn(5,3) == 46");
 
     </script>
   </body>
