@@ -1,0 +1,138 @@
+<!-- 
+1. Given the following code, do the following:
+   1. simplify it by using the with statement; and
+   2. simplify without using the with statement.
+
+
+var myLib = {
+        math: {
+                real: {
+                        add: function (a, b){ /*code goes here*/},
+                        sub: function (a, b){ /*code goes here*/},
+                        mul: function (a, b){ /*code goes here*/}
+                },
+                complex: {
+                        Num: function (real, img){/*code goes here*/},
+                        add: function (a, b){ /*code goes here*/},
+                        sub: function (a, b){ /*code goes here*/},
+                        mul: function (a, b){ /*code goes here*/}
+                },
+                matrix: {
+                        add: function (a, b){ /*code goes here*/},
+                        sub: function (a, b){ /*code goes here*/},
+                        mul: function (a, b){ /*code goes here*/},
+                        eye: function (size){ /*code goes here*/},
+                        dot: function (m, a){ /*code goes here*/}
+                }
+        }
+};
+
+
+var answer = myLib.math.real.sub(
+  myLib.math.real.add (20, 22), 
+  myLib.math.real.mul(2,5)
+);
+
+
+var ans = myLib.math.matrix.dot(
+  myLib.math.matrix.eye (4), 
+  myLib.math.complex.sub (
+    new myLib.math.complex.Num (
+      myLib.math.real.add(5,2),
+      -3
+    ), 
+    new myLib.math.complex.Num (3,4)
+  )
+);
+        
+Use of the with statement and alternatives to it.
+Estimated Time: 4 hr.
+-->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Chapter 10, ex 01</title>
+    <script type="text/javascript" src="../../scripts/assert.js"></script>
+    <link href="../../styles/assert.css" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <script type="text/javascript">            
+
+      var myLib = {
+              math: {
+                      real: {
+                              add: function (a, b){ /*code goes here*/},
+                              sub: function (a, b){ /*code goes here*/},
+                              mul: function (a, b){ /*code goes here*/}
+                      },
+                      complex: {
+                              Num: function (real, img){/*code goes here*/},
+                              add: function (a, b){ /*code goes here*/},
+                              sub: function (a, b){ /*code goes here*/},
+                              mul: function (a, b){ /*code goes here*/}
+                      },
+                      matrix: {
+                              add: function (a, b){ /*code goes here*/},
+                              sub: function (a, b){ /*code goes here*/},
+                              mul: function (a, b){ /*code goes here*/},
+                              eye: function (size){ /*code goes here*/},
+                              dot: function (m, a){ /*code goes here*/}
+                      }
+              }
+      };
+
+      // Original way
+      var answer = myLib.math.real.sub(
+        myLib.math.real.add (20, 22), 
+        myLib.math.real.mul(2,5)
+      );
+
+      var ans = myLib.math.matrix.dot(
+        myLib.math.matrix.eye (4), 
+        myLib.math.complex.sub (
+          new myLib.math.complex.Num (
+            myLib.math.real.add(5,2),
+            -3
+          ), 
+          new myLib.math.complex.Num (3,4)
+        )
+      );
+
+      // Simplify it by using the with statement
+      with (myLib.math){
+        var ans = matrix.dot(
+          matrix.eye (4), 
+          complex.sub (
+            new complex.Num (
+              real.add(5,2),
+              -3
+            ), 
+            new complex.Num (3,4)
+          )
+        );        
+      }
+
+
+      // Simplify without using the with statement
+      (function(m){ 
+        var answer = m.real.sub(
+          m.real.add (20, 22), 
+          m.real.mul(2,5)
+        );
+
+        var ans = m.matrix.dot(
+          m.matrix.eye (4), 
+          m.complex.sub (
+            new m.complex.Num (
+              m.real.add(5,2),
+              -3
+            ), 
+            new m.complex.Num (3,4)
+          )
+        );    
+      })(myLib.math);  
+
+    </script>
+  </body>
+</html>
