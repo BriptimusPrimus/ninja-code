@@ -1,0 +1,63 @@
+<!-- 
+1. Given the following HTML markup, create a JS function that can print out the attributes of the DOM elements:
+
+
+        <div id='a' class='square' style='display:inline-block' val='something important'></div>
+
+
+Exampl:
+
+
+printAttr (el, ['id', 'class', 'style', 'val']);
+// should print out:
+// a
+// square
+// display:inline-block
+// something important
+Use of built in JS functionality for attribute retrieval
+Estimated Time:  4 hr.
+-->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Chapter 12, ex 01</title>
+    <script type="text/javascript" src="../../scripts/assert.js"></script>
+    <link href="../../styles/assert.css" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <div id='a' class='square' style='display:inline-block' val='something important'></div>
+    <img src="../images/ninja-with-shuriken.png" id="withShuriken" style="display:none"> 
+    <div id='b' style="background-color:rgb(44,88,168)"></div> 
+    <div id='c' style="color:#000;" title="Ninja power!"></div>      
+    <script type="text/javascript">            
+
+      function printAttr(element, atrs) {
+        var results = [];
+        for (var i = 0; i < atrs.length; i++) {
+          results.push(element.getAttribute(atrs[i]));          
+        };
+        //print the results
+        document.write('<br>');        
+        for (var i = 0; i < results.length; i++) {
+          document.write('<br>' + results[i]);
+          console.log(results[i]);
+        };
+        return results;
+      }
+
+      var el1 = document.getElementById('a');
+      printAttr(el1, ['id', 'class', 'style', 'val']);
+
+      var el2 = document.getElementById('withShuriken');
+      printAttr(el2, ['id', 'src', 'style', 'val']);
+
+      var el3 = document.getElementById('b');
+      printAttr(el3, ['id', 'class', 'style', 'val']); 
+
+      var el4 = document.getElementById('c');
+      printAttr(el4, ['id', 'title', 'style', 'val']);            
+
+    </script>
+  </body>
+</html>
