@@ -13,9 +13,39 @@
   </head>
   <body>
 
+    <span>Number of Columns: </span>
+    <input id="range" type="range" name="points" min="1" max="10" value="3">
+    <br><br>
+
+    <article style="-webkit-column-count: 3; -moz-column-count: 3">
+      <p>Ut labore et dolore magna aliqua. Sed do eiusmod tempor incididunt eu fugiat nulla pariatur. Velit esse cillum dolore ullamco laboris nisi ut enim ad minim veniam Ut aliquip ex ea commodo consequat. Cupidatat non proident, sunt in culpa sed do eiusmod tempor incididunt. Excepteur sint occaecat mollit anim id est laborum. Ut labore et dolore magna aliqua. Quis nostrud exercitation velit esse cillum dolore ut enim ad minim veniam. Ut labore et dolore magna aliqua. Sed do eiusmod tempor incididunt eu fugiat nulla pariatur. Velit esse cillum dolore ullamco laboris nisi ut enim ad minim veniam. Ut aliquip ex ea commodo consequat. Cupidatat non proident, sunt in culpa sed do eiusmod tempor incididunt. Excepteur sint occaecat mollit anim id est laborum. Ut labore et dolore magna aliqua. Quis nostrud exercitation velit esse cillum dolore ut enim ad minim veniam.</p>    
+    </article>
+
     <script type="text/javascript">                
 
       window.onload = function(){
+
+        var range = document.getElementById("range"); 
+        range.addEventListener("change", function(e){
+          
+          // get defined user values
+          var cols = range.value;  
+          var art = document.getElementsByTagName("article")[0];
+          var style = art.getAttribute("style");
+          //style = "-webkit-column-count: " + cols + "; -moz-column-count: " + cols;
+          console.log("current style: " + style);
+          //art.setAttribute("style", style);
+
+          art.style.columnCount = cols;
+          art.style.webkitColumnCount = cols;
+          art.style.MozColumnCount = cols;
+          
+          //art.style["-webkit-column-count"] = cols;
+          //art.style["-moz-column-count"] = cols;          
+
+          style = art.getAttribute("style");
+          console.log("current style: " + style);
+        });        
 
       }    
 
