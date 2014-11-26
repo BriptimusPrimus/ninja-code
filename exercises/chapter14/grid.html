@@ -1,0 +1,56 @@
+<!-- 
+1. Create a function that will populate a containing div with a grid of NxM size. The size must be user defined through a GUI. Every time a new size is selected, any information already on the container should be reset. 
+        Dom manipulation through user input
+Estimated Time: 4 hr.
+-->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Chapter 12, ex 01</title>
+    <script type="text/javascript" src="../../scripts/assert.js"></script>
+    <link href="../../styles/assert.css" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    
+    <span>Rows: </span><input id="rows" type="text" value="0">
+    <br>  
+    <span>Cols: </span><input id="cols" type="text" value="0">
+    <br>
+    <button id="ok">Click me!</button>
+    <div id="container"></div>
+
+    <script type="text/javascript">                
+
+      window.onload = function(){
+        var button = document.getElementById("ok"); 
+        button.addEventListener("click", function(e){
+          // get defined user values
+          var rows = document.getElementById("rows").value;  
+          var cols = document.getElementById("cols").value;
+          console.log("number of rows: " + rows + ", number of cols: " + cols);
+
+          if(rows < 1 || cols < 1) return;
+          
+          //construct table HTML
+          var htmlTable = '<table id="mytable" border="2" cellpadding="5">';
+          for (var i = 1; i <= rows; i++) {
+            htmlTable += "<tr>";
+            for (var j = 1; j <= cols; j++) {
+              htmlTable += "<td>" + i + " - " + j + "</td>";
+            };
+            htmlTable += "</tr>";
+          };
+          htmlTable += "</table>"; 
+          console.log(htmlTable);
+
+          //insert HTML into container          
+          var div = document.getElementById("container");
+          div.innerHTML = htmlTable;
+         
+        });
+      }    
+
+    </script>
+  </body>
+</html>

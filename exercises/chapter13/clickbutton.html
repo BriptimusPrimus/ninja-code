@@ -1,0 +1,43 @@
+<!-- 
+1. Create a button that can only be used 3 times. Indicate the usage of the button using the meter element. 
+Once the button has been pressed three times, it must not activate again.
+
+
+        Removing events, closures, and form element usage. 
+Estimated Time: 4 hr.
+-->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Chapter 12, ex 01</title>
+    <script type="text/javascript" src="../../scripts/assert.js"></script>
+    <link href="../../styles/assert.css" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+
+    <button id="testButton">Click me!</button>
+    <meter id="met" min="0" low="1" high="2" max="3" value="0">number of clicks</meter>
+    <br><p id="times"> 0 <p>
+
+    <script type="text/javascript">            
+
+      function clickThreeTimes(e){
+        var met = document.getElementById("met");          
+        if (met.value < met.max){
+          met.value++;
+          document.getElementById("times").textContent = met.value;
+        }
+        else{
+          e.target.removeEventListener("click", clickThreeTimes);
+        }
+      }      
+
+      window.onload = function(){
+        var button = document.getElementById("testButton"); 
+        button.addEventListener("click", clickThreeTimes);
+      }    
+
+    </script>
+  </body>
+</html>
