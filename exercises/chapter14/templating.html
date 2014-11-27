@@ -1,0 +1,111 @@
+<!-- 
+3. Create simple Single Page Application (SPA) that will have two types of templates. Specifications:
+   1. Template 1: should display an image on the left with a snippet of text on the right. 
+   2. Template 2: will display the image on the top left, and the text should wrap around the image. 
+   3. Templates should be created on custom script tags
+   4. fragments should be used where convenient. 
+-->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Chapter 12, ex 01</title>
+    <script type="text/javascript" src="../../scripts/assert.js"></script>
+    <link href="../../styles/assert.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="data.js"></script>
+  </head>
+  <body>
+
+    <div id="container"></div>
+
+    <script type="text/templatescript" id="template1"> 
+      <div id="@id@" style="padding:20px">
+        <img src="@path@" width="50" height="50" style="display:inline">
+        <p style="display:inline">@100text@</p>
+      </div>    
+    </script>
+
+    <script type="text/templatescript" id="template2"> 
+      <div id="@id@">
+        <img src="@path@" width="50" height="50" style="float:left">
+        <p>@text@</p>
+      </div>
+      <a href="#">Go back</a>    
+    </script>    
+
+    <script type="text/javascript">                
+
+      function template(templ, data) {
+
+        return templ.replace(/(@\w+@)/g,
+          function(all, prop){
+
+            //get rid of both @
+            prop = prop.slice(1, -1);
+
+            //identify if number at begining
+            var n = prop.match(/^([0-9]+)/g);
+            console.log("n: " + n);
+            if(n){
+              n = n[0];
+              prop = prop.slice(n.length);
+              //return just the number of characters
+              return data[prop].slice(0, n) + "...";
+            }
+              
+            console.log("prop: " + prop);
+            console.log("data[prop]: " + data[prop]);
+
+            return data[prop];
+          }
+        );      
+        
+      }
+
+      function renderData(templ, data){
+        var result = "";
+        for (var i = 0; i < data.length; i++) {
+          result += template(templ, data[i]);
+        };        
+        return result;                
+      }
+
+      function applyTemp1(){
+        var temp = document.getElementById("template1").innerHTML;
+        var html = renderData(temp, globalData);
+        //insert HTML into container          
+        var div = document.getElementById("container");
+        div.innerHTML = html;                
+      }
+
+      function applyTemp2(id){  
+        var temp = document.getElementById("template2").innerHTML;      
+        var html = template(temp, globalData[id]);
+        //insert HTML into container          
+        var div = document.getElementById("container");
+        div.innerHTML = html;        
+      }
+
+      window.onload = function(){
+    
+        setTimeout(function(){applyTemp1();}, 1000);
+
+        //add click event for the images
+        document.getElementById("container")
+          .addEventListener("click", function(e){
+            var target = e.target;
+            if (target.tagName.toLowerCase() === 'img' ){
+              applyTemp2(target.parentNode.id);
+            } 
+            else if (target.tagName.toLowerCase() === 'a' ){
+              applyTemp1();
+            }
+            e.preventDefault();
+            e.stopPropagation();         
+          });
+
+      }    
+
+    </script>
+  </body>
+</html>
