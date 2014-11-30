@@ -6,19 +6,223 @@
 * must be able to view all notes created
 * notes must be persistent (remain even after the browser has been closed and reopened)
 -->
-
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Notes</title>
-    <script type="text/javascript" src="../../scripts/assert.js"></script>
-    <link href="../../styles/assert.css" rel="stylesheet" type="text/css">
+    <title>Notes</title>    
+    <link href="styles.css" rel="stylesheet">
+    <script type="text/javascript" src="data.js"></script>
   </head>
   <body>
 
+    <button type="button" name="new" class="addButton" id="addButton">New Note</button>
+    <div id="notesContainer" class="notesContainer">                    
+    </div>
+
+    <script type="text/templatescript" id="template1"> 
+      <div class="note">
+        <div class="textwrap">
+          <p class="text" contenteditable="true" id="@id@" onchange="alert('shalalala');">
+            @text@                         
+          <p>
+        </div>
+        <div class="controls">          
+          <button type="button" name="delete" value="@id@">X</button>     
+          <div class="dates">
+            <p>creation date: <span>@createdate@</span></p>            
+            <p>last update: <span id="lastupdate@id@">@editdate@</span></p>
+          </div>     
+        </div>
+      </div>          
+    </script>
+
     <script type="text/javascript">                
     
+      function template(templ, data) {
 
+        return templ.replace(/(@\w+@)/g,
+          function(all, prop){
+
+            //get rid of both @
+            prop = prop.slice(1, -1);
+              
+            // console.log("prop: " + prop);
+            // console.log("data[prop]: " + data[prop]);
+
+            return data[prop];
+          }
+        );      
+        
+      }
+
+      function renderData(templ, data){
+        var result = "";  
+        var keys = [];
+        for (var key in data){
+          keys.push(key);
+        }
+        //invert the order of the properties
+        keys.reverse();
+
+        for (var i = 0; i < keys.length; i++) {
+          result += template(templ, data[keys[i]]);
+        };
+        return result;                
+      }
+
+      function readAll(){
+        var temp = document.getElementById("template1").innerHTML;
+        var html = renderData(temp, dal.getAll());
+        //insert HTML into container          
+        var container = document.getElementById("notesContainer");
+        container.innerHTML = html;                
+      }
+
+      function DAL(){
+
+        this.getAll = function(){
+          var data = localStorage.data;  
+          if(!data){
+            data = "{}";
+          }
+          return JSON.parse(data);
+        }
+
+        this.getNote = function(date){
+          var data = localStorage.data;  
+          if(!data){
+            return null;
+          }
+          var notes = JSON.parse(data);
+          return notes[date];
+        } 
+
+        this.newNote = function(textNote){
+          var data = localStorage.data || "{}";
+          var now = new Date();      
+          var shortDate = now.toLocaleDateString();
+          var note = {
+            id : now.getTime(), //id = miliseconds
+            text : textNote,
+            createdate : shortDate, 
+            editdate : shortDate            
+          }  
+          try{
+            var notes = JSON.parse(data);
+            //id = miliseconds
+            notes[now.getTime()] = note;
+            localStorage.data = JSON.stringify(notes);
+          }
+          catch(e){
+            console.log(e);
+            return false;
+          }
+          return note;
+        }        
+
+        this.deleteNote = function(iddate){
+          var data = localStorage.data || "{}";  
+          try{
+            var notes = JSON.parse(data);
+            delete notes[iddate];
+            localStorage.data = JSON.stringify(notes);
+          }
+          catch(e){
+            console.log(e);
+          }
+        }
+
+        this.updateNote = function(id, newText, newDate){
+          var data = localStorage.data || "{}";      
+          var note = this.getNote(id);
+          if (!note) 
+            return null;
+          note.editdate = newDate;
+          note.text = newText; 
+          try{
+            var notes = JSON.parse(data);
+            //id = miliseconds
+            notes[id] = note;
+            localStorage.data = JSON.stringify(notes);
+          }
+          catch(e){
+            console.log(e);
+            return false;
+          }
+          return note;                      
+        }
+
+      }
+
+      function deleteNote(e){
+        var target = e.target;
+        if (target.tagName.toLowerCase() !== 'button' 
+          || target.name.toLowerCase() !== 'delete' ) 
+            return;
+        
+        if(confirm('Are you sure?')){
+          dal.deleteNote(target.value);
+          readAll();          
+        }
+
+        e.preventDefault();
+        e.stopPropagation();           
+      }
+
+      function addNewNote(e){
+        dal.newNote("...");
+        readAll();
+
+        e.preventDefault();
+        e.stopPropagation();        
+      }
+
+      function updateNote(e){
+        var target = e.target;
+        if (target.tagName.toLowerCase() !== 'p' 
+          || target.className.toLowerCase() !== 'text') 
+            return;
+        
+        //update text and last update date
+        var shortDate = new Date().toLocaleDateString();
+        dal.updateNote(target.id ,target.textContent, shortDate);
+        
+        //reflect change of last update date without reading the storage
+        var lastDate = document.getElementById("lastupdate" + target.id);
+        lastDate.textContent = shortDate;
+
+        e.preventDefault();
+        e.stopPropagation();           
+      }
+
+      window.onload = function(){
+
+        //test for local storage support
+        if(typeof(Storage) === "undefined") {
+            document.write("Sorry! No Web Storage support in this browser");
+            return;
+        }       
+
+        //create DAL object
+        dal = new DAL();
+
+        testing = false;
+        if(testing){
+            localStorage.data = ""; 
+            dal.newNote("Note 1");        
+        }        
+
+        //set event listeners
+        var container = document.getElementById("notesContainer");
+        container.addEventListener("click", deleteNote);
+        container.addEventListener("input", updateNote);
+
+        var addButton = document.getElementById("addButton");
+        addButton.addEventListener("click", addNewNote);                
+
+        readAll();          
+
+      }
 
     </script>
   </body>
