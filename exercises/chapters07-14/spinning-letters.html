@@ -25,10 +25,8 @@
         color: #FC6512;
         font-family: Baskerville, "Palatino Linotype", Times, serif;
         font-size: 5em;
-        /*float: left;  */
         display: inline-block;              
         margin-right: 1em;
-        /*position: relative;*/
       }
 
       .controls{
@@ -178,17 +176,14 @@
 
         speedUp : function(){
           this.speed *= 2;
-          // console.log("speed: " + this.speed);
         },
 
         slowDown : function(){
           this.speed /= 2;
-          // console.log("speed: " + this.speed);          
         },
 
         switchClockWise : function(){
           this.masterClock = !this.masterClock;
-          // console.log("master clock: " + this.masterClock);
         }
 
       }; 
@@ -263,7 +258,6 @@
         for (var i = 0; i < letters.length; i++) {
           timerControl.add(letters[i], spinElm, 
             pairs[i].interval, pairs[i].clockwise);
-          // break; //only the first one
         };
 
       }

@@ -76,17 +76,19 @@ Editable properties should include:
       }      
 
       div .editable-div {
-        background-color: black;  
-        width: 100%;
-        height: 100%;   
-        color: white; 
+        background-color: white;  
+        width: 90%;
+        height: 90%;   
         position: relative;
+        margin:4px auto auto auto;
+        border: 1px solid black;
+        box-sizing: border-box;
       }      
 
       div .editable-div span{
         position: absolute;
         top: 25%;
-        left: 25%;
+        left: 25%;        
       }
 
       .controls {
@@ -109,7 +111,7 @@ Editable properties should include:
 
       .controls div.components span {
         font-size: .9em;
-        padding: 3em;
+        padding: 1.5em;
       }
 
       .colored-sqare {
@@ -119,6 +121,13 @@ Editable properties should include:
         margin-top: .4em;
         display: inline-block;
       }      
+
+      .color-picker {
+        width: 2em;
+        height: 1.5em;        
+        margin-top: .4em;
+        display: inline-block;
+      }
 
       .color-range{
         width: 10em;
@@ -141,32 +150,11 @@ Editable properties should include:
 
     <div id="controls" class="controls">
       
-      <div id="editbox" class="wrapper">
-      </div>
-      
-      <div id="border-color-controls" class="components">
-        <span>Border Color</span>
-        <div class="color-component">
-          <div class="colored-sqare red"></div>
-          <input type="range" id="border-color-red" class="color-range" min="0" max="255" value="0">
-        </div>
-        <div class="color-component">
-          <div class="colored-sqare green"></div>
-          <input type="range" id="border-color-green" class="color-range" min="0" max="255" value="0">
-        </div>
-        <div class="color-component">
-          <div class="colored-sqare blue"></div>
-          <input type="range" id="border-color-blue" class="color-range" min="0" max="255" value="0">
-        </div>
-      </div>
-      
-      <div id="border-thickness-controls" class="components">
-        <span>Border Thickness</span>
-        <input type="range" id="border-thickness" class="range" min="0" max="20" value="0">        
-      </div>
+      <div id="editbox" class="wrapper"></div>      
       
       <div id="background-color-controls" class="components">
         <span>Background Color</span>
+        <input type="color" id="background-color" class="color-picker">
         <div class="color-component">
           <div class="colored-sqare red"></div>
           <input type="range" id="background-color-red" class="color-range" min="0" max="255" value="0">
@@ -180,6 +168,28 @@ Editable properties should include:
           <input type="range" id="background-color-blue" class="color-range" min="0" max="255" value="0">
         </div>        
       </div>
+
+      <div id="border-thickness-controls" class="components">
+        <span>Border Thickness</span>        
+        <input type="range" id="border-thickness" class="range" min="0" max="10" value="0">        
+      </div>    
+
+      <div id="border-color-controls" class="components">
+        <span>Border Color</span>
+        <input type="color" id="border-color" class="color-picker">
+        <div class="color-component">
+          <div class="colored-sqare red"></div>
+          <input type="range" id="border-color-red" class="color-range" min="0" max="255" value="0">
+        </div>
+        <div class="color-component">
+          <div class="colored-sqare green"></div>
+          <input type="range" id="border-color-green" class="color-range" min="0" max="255" value="0">
+        </div>
+        <div class="color-component">
+          <div class="colored-sqare blue"></div>
+          <input type="range" id="border-color-blue" class="color-range" min="0" max="255" value="0">
+        </div>
+      </div>      
       
       <div id="rounded-edges-controls" class="components">
         <span>Rounded Edges</span>
@@ -201,11 +211,10 @@ Editable properties should include:
       var selectedDiv = null;
 
       function selectDiv(id){
-        id = "editable" + id;
         selectedDiv = document.getElementById(id) || null;
       }
 
-      function unselectDiv(id){
+      function unselectDiv(){
         selectedDiv = null;
       }
 
@@ -217,6 +226,9 @@ Editable properties should include:
       }
 
       function setBackgroundColor(){
+        if (selectedDiv == null){
+          return;
+        }
         var red = document.getElementById("background-color-red").value,
             green = document.getElementById("background-color-green").value,
             blue = document.getElementById("background-color-blue").value;
@@ -224,20 +236,51 @@ Editable properties should include:
       }
 
       function setBorderRadious(control){
+        if (selectedDiv == null){
+          return;
+        }        
         selectedDiv.style.borderRadius = control.value + "px";          
       }
 
       function setBorderThickness(control){
+        if (selectedDiv == null){
+          return;
+        }        
         selectedDiv.style.borderStyle = "solid";
         selectedDiv.style.borderWidth = control.value + "px ";  
       }
 
       function setBorderColor(){
+        if (selectedDiv == null){
+          return;
+        }        
         var red = document.getElementById("border-color-red").value,
             green = document.getElementById("border-color-green").value,
             blue = document.getElementById("border-color-blue").value;
         selectedDiv.style.borderColor = rgb(red, green, blue);
-        console.log(selectedDiv.style.border);
+      }
+
+      function allowDrop(e){
+        e.preventDefault(); 
+      }
+
+      function drag(e){
+        e.dataTransfer.setData("text", e.target.id);
+      }
+
+      function drop(e){
+        if (e.target.className != "wrapper" 
+          || e.target.childNodes.length > 0){
+            return;        
+        }       
+        var iddata = e.dataTransfer.getData("text");        
+        e.target.appendChild(document.getElementById(iddata));
+        if(e.target.id == "editbox"){
+          selectDiv(iddata);
+        }
+        else if (document.getElementById("editbox").childNodes.length < 1){
+          unselectDiv();
+        }
       }
 
       window.onload = function(){
@@ -245,11 +288,15 @@ Editable properties should include:
         var divsNum = 13;
         var divsHtml = "";
         for (var i = 0; i < divsNum; i++) {
-          divsHtml += '<div class="wrapper"><div id="editable' 
-            + i + '" class="editable-div"></div></div>';
+          divsHtml += '<div class="wrapper" ondrop="drop(event)" ondragover="allowDrop(event)"><div id="editable' + i + 
+          '" class="editable-div" draggable="true" ondragstart="drag(event)"></div></div>';
         };        
         var container = document.getElementById("main-container");
-        container.innerHTML = divsHtml;        
+        container.innerHTML = divsHtml; 
+
+        //add events
+        document.getElementById("editbox").addEventListener("drop", drop);
+        document.getElementById("editbox").addEventListener("dragover", allowDrop);
 
         document.getElementById("background-color-red")
           .addEventListener("change", function(e){
@@ -269,6 +316,15 @@ Editable properties should include:
             e.preventDefault();
             e.stopPropagation();                 
           });
+        document.getElementById("background-color")
+          .addEventListener("change", function(e){
+            if (selectedDiv == null){
+              return;
+            }
+            selectedDiv.style.backgroundColor = this.value;
+            e.preventDefault();
+            e.stopPropagation();
+          });
 
         document.getElementById("border-color-red")
           .addEventListener("change", function(e){
@@ -287,7 +343,16 @@ Editable properties should include:
             setBorderColor();
             e.preventDefault();
             e.stopPropagation();                 
-          });                              
+          });  
+        document.getElementById("border-color")
+          .addEventListener("change", function(e){
+            if (selectedDiv == null){
+              return;
+            }
+            selectedDiv.style.borderColor = this.value;
+            e.preventDefault();
+            e.stopPropagation();
+          });                                      
 
         document.getElementById("rounded-edges")
           .addEventListener("change", function(e){
@@ -302,13 +367,6 @@ Editable properties should include:
             e.preventDefault();
             e.stopPropagation();            
           });
-
-        //testing
-        var testing = true;
-        if (testing){
-          selectDiv(0);          
-        }
-
       }
 
     </script>
