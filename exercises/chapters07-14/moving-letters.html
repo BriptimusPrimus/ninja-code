@@ -1,0 +1,184 @@
+<!-- 
+1. Create a simple animation of spinning letters
+   1. Some letters should spin clockwise, others should spin counter-clockwise.
+   2. Letters should move at different speeds
+   3. The animation should be user controlled
+      1. pause all
+      2. pause some
+      3. speed up/slow down
+-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Spinning Letters</title>    
+
+    <style>
+
+      body {
+        background: #CDE6FF;
+        width: 1200px;        
+        margin: 0 auto;   
+      }
+
+      .letterwrap{
+        color: #FC6512;
+        font-family: Baskerville, "Palatino Linotype", Times, serif;
+        font-size: 5em;
+        float: left;        
+      }
+
+      .spinning{
+        position: relative;
+        margin-right: 1em;        
+      }
+
+    </style>
+
+  </head>
+  <body>
+
+    <div id="container">
+        <div class="letterwrap">
+          <span id="letter0" class="spinning">S</span>
+        </div>
+        <div class="letterwrap">
+          <span id="letter1" class="spinning">P</span>
+        </div>
+        <div class="letterwrap">
+          <span id="letter2" class="spinning">I</span>
+        </div>
+        <div class="letterwrap">
+          <span id="letter3" class="spinning">N</span>
+        </div>
+        <div class="letterwrap">
+          <span id="letter4" class="spinning">N</span>
+        </div>  
+        <div class="letterwrap">
+          <span id="letter5" class="spinning">I</span>
+        </div>  
+        <div class="letterwrap">
+          <span id="letter6" class="spinning">N</span>        
+        </div>  
+        <div class="letterwrap">
+          <span id="letter7" class="spinning">G</span>                
+        </div>  
+    </div>
+    <script type="text/javascript">                
+      
+      var spinElm = function(elmt, itvl, psd, clk){
+
+        var element = elmt, 
+            interval = itvl, 
+            paused = psd, 
+            clockwise = clk;
+
+        var y = 2;            
+
+        return function iterate(){
+          if (paused[element.id]){
+            return;
+          }
+
+          element.style.top = y + "em";
+          y += (0.1 * (clockwise ? 1 : -1));
+
+          if(y <= 0 || y >= 6){
+            clockwise = !clockwise;
+          }
+
+          console.log("spinning element: " + element.id + 
+             ", clockwise: " + clockwise + ", top: " + element.style.top);          
+
+          setTimeout(iterate, interval);
+        }
+
+      };
+
+      var timerControl = {
+
+        functions : {},
+        
+        paused : {},
+
+        add : function(element, fn, interval, clockwise){
+          this.paused[element.id] = true;
+          var handler = fn(element, interval, this.paused, clockwise);
+          this.functions[element.id] = handler;
+        },
+
+        pauseFunc : function(id){
+          this.paused[id] = true;
+        },
+
+        resumeFunc : function(id){
+          if (!this.paused[id]){
+            //function already running
+            return;
+          }
+          this.paused[id] = false;
+          this.functions[id]();          
+        },
+
+        pauseOrResume : function(id){
+          if (this.paused[id]){
+            this.resumeFunc(id);
+          }else{
+            this.pauseFunc(id);
+          }
+        },
+
+        start : function(){
+          for (var key in this.functions) {
+            this.resumeFunc(key);
+          };          
+        },
+
+        pauseAll : function(){
+          for (var key in this.functions) {
+            this.pauseFunc(key);
+          };           
+        }
+
+      }; 
+
+      window.onload = function(){
+
+        //pause/resume event
+        var container = document.getElementById("container");
+        container.addEventListener("click", 
+          function (e){
+            var target = e.target;
+            if (target.className.toLowerCase() !== 'spinning') 
+                return;
+            
+            timerControl.pauseOrResume(target.id);
+
+            e.preventDefault();
+            e.stopPropagation();           
+          }
+        );        
+
+        //pairs of intervals and clockwise
+        var pairs = [
+          { interval : 250, clockwise : true },
+          { interval : 250, clockwise : false },
+          { interval : 500, clockwise : true },
+          { interval : 500, clockwise : false },
+          { interval : 750, clockwise : true },
+          { interval : 750, clockwise : false },
+          { interval : 1000, clockwise : true },
+          { interval : 1000, clockwise : false }
+        ];
+
+        var letters = document.getElementsByClassName("spinning");                               
+        for (var i = 0; i < letters.length; i++) {
+          timerControl.add(letters[i], spinElm, 
+            pairs[i].interval, pairs[i].clockwise);
+        };
+
+        timerControl.start();
+      }
+
+    </script>
+  </body>
+</html>
