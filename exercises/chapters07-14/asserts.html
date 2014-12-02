@@ -1,0 +1,86 @@
+<html>
+  <head>
+    <title>Test Suite</title>
+    <script>
+
+      (function() {
+
+        var originalSetTimeout = window.setTimeout;
+      
+        this.setTimeout = function setTimeout(fn, time){        
+          fn.assertionRoot = setTimeout.caller.assertionRoot;        
+          originalSetTimeout(fn, time);
+        }
+
+        function execute(fn, root){          
+          fn.assertionRoot = root || document.getElementById("results");
+          fn();
+        }
+
+        this.assert = function assert(value, desc) {
+          
+          var root = assert.caller.assertionRoot || 
+              document.getElementById("results");             
+
+          var li = document.createElement("li");
+          li.className = value ? "pass" : "fail";
+          li.appendChild(document.createTextNode(desc));
+          root.appendChild(li);
+          if (!value) {
+            li.parentNode.parentNode.className = "fail";
+          }
+          return li;
+        };
+        
+        this.test = function test(name, fn) {
+          var root = document.getElementById("results");
+          root = assert(true, name).appendChild(
+              document.createElement("ul"));
+          execute(fn, root);
+        };
+
+      })();
+
+      window.onload = function() {
+
+        assert(true, "Outside and before the test blocks");
+
+        test("A test.", function() {
+          assert(true, "First assertion completed");
+          assert(true, "Second assertion completed");
+          assert(true, "Third assertion completed");
+        });
+       
+        test("TestBlock B", function(){                
+                setTimeout(function(){assert(false, "test delayed B");}, 2000);
+                assert(true, "Some assertion completed");
+        });
+
+        setTimeout(function(){assert(false, "Crazy!");}, 1000);
+
+        test("Another test.", function() {
+          assert(true, "First test completed");
+          assert(false, "Second test failed");
+          assert(true, "Third assertion completed");
+        });
+        test("A third test.", function() {
+          assert(null, "fail");
+          assert(5, "pass")
+        });
+
+        assert(true, "Outside and after the test blocks");
+        test("TestBlock C", function(){
+                assert(true, "Inside test block C");
+        }); 
+
+      };
+    </script>
+    <style>
+      #results li.pass { color: green; }
+      #results li.fail { color: red; }
+    </style>
+  </head>
+  <body>
+    <ul id="results"></ul>
+  </body>
+</html>
