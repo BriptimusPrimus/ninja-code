@@ -20,18 +20,28 @@
       function dataType(){
         var result = "";
         for (var i = 0; i < arguments.length; i++) {          
-          result += typeof arguments[i] + ", ";
-        };
+          var type = typeof arguments[i];
+          if (type == "object"){
+            type = arguments[i].constructor.name;
+          } else if (type == "number"){
+            if (arguments[i] % 1 != 0){
+              type = "float";
+            }
+          }
+          result += type + ", ";
+        };       
         return result.slice(0, result.length - 2);
       }
 
       var s = dataType(1, 6.2831, "pi*2", [function(){}, 1], {}, function () {}); 
       // number, float, string, array, object, function
       assert(true, 'parameters: 1, 6.2831, "pi*2", [function(){}, 1], {}, function () {}');
-      assert(s == "number, float, string, array, object, function", 
-        '"number, float, string, array, object, function"');
-      assert(s == "number, number, string, object, object, function", 
-        '"number, number, string, object, object, function"');      
+      assert(s == "number, float, string, Array, Object, function", 
+        '"number, float, string, Array, Object, function"');
+      assert(s == "number, number, string, Object, Object, function", 
+        '"number, number, string, Object, Object, function"');  
+      assert(s == "number, float, string, Object, Object, function", 
+        '"number, float, string, Object, Object, function"');            
       console.log(s);
       console.log("s.length" + s.length);
 
